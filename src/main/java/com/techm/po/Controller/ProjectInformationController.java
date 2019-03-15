@@ -1,5 +1,6 @@
 package com.techm.po.Controller;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,4 +51,32 @@ public class ProjectInformationController {
 		response = projectInformationService.fetchprojectInfo(accountCategory);
 		return response;
 	}
+	
+	@GetMapping("/fetch/projectDetails")
+	public Map<String, Object> fetchProjectDetails(@RequestParam(name="accountCategory", required=true) String accountCategory,
+			@RequestParam(name="accountName", required=true) String accountName,
+			@RequestParam(name="projectName", required=true) String projectName,
+			@RequestParam(name="projectType", required=true) String projectType,
+			@RequestParam(name="yyyyMM", required=true) String yyyyMM){
+		
+		Map<String, Object> response;
+		response=projectInformationService.fetchProjectDetails(accountCategory, accountName, projectName, projectType, yyyyMM);
+		return response;
+	}
+	
+	@GetMapping("/fetch/projectInfoList")
+	public Map<String, Object> fetchprojectInfoList(@RequestParam(name = "customerName", required = true) String customerName,
+			@RequestParam(name = "projectStartDate", required = true) String projectStartDate,
+			@RequestParam(name = "projectEndDate", required = true) String projectEndDate,
+			@RequestParam(name = "quote", required = true) String quote,
+			@RequestParam(name = "pId", required = true) String pId,
+			@RequestParam(name = "contract", required = true) String contract) {
+		
+		Map<String, Object> response;
+		response=new HashMap<String, Object>();
+		
+		response = projectInformationService.getPOSummaryDetails(customerName, projectStartDate, projectEndDate, quote, pId, contract);
+		return response;
+	}
+	
 }
