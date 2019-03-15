@@ -62,6 +62,13 @@ public class ProjectDetailServiceImpl implements ProjectDetailService {
 						resourceMapRepository.save(rdto);
 					}
 				}
+				if(projectBo.getContractToPid().size()>0) {
+					for (ResourceMap r : projectBo.getContractToPid()) {
+						ResourceMapDTO rdto;
+						rdto = rmapBoToDto(r);
+						resourcesRepository.updatecontractpid(rdto.getAssociateId(),rdto.getpId());
+					}
+				}
 
 				projectDetailRepository.save(dto);
 				response.put("message", "Project Details added successfully");
@@ -98,11 +105,13 @@ public class ProjectDetailServiceImpl implements ProjectDetailService {
 		pDto.setProjectType(projectBo.getProjectType());
 		pDto.setBillingCurrency(projectBo.getBillingCurrency());
 		pDto.setPoAmount(projectBo.getPoAmount());
+		pDto.setResourceCount(projectBo.getResourceCount());		
 		pDto.setProjectStartDate(DateUtils.parseDate(projectBo.getProjectStartDate()));
 		pDto.setProjectEndDate(DateUtils.parseDate(projectBo.getProjectEndDate()));
 		pDto.setStatus(projectBo.getStatus());
 		pDto.setDeliverySpoc(projectBo.getDeliverySpoc());
 		pDto.setEffortSpoc(projectBo.getEffortSpoc());
+		pDto.setUnitOfMeasurement(projectBo.getUnitOfMeasurement());
 		pDto.setPid(projectBo.getPid());
 		pDto.setQuote(projectBo.getQuote());
 		pDto.setContract(projectBo.getContract());
@@ -118,6 +127,7 @@ public class ProjectDetailServiceImpl implements ProjectDetailService {
 		List<ProjectBO> projectBoList = new ArrayList<ProjectBO>();
 		for (ProjectDTO dto : projectDtoList) {
 			ProjectBO projectBo = new ProjectBO();
+			projectBo.setId(dto.getId());
 			projectBo.setAccountCategory(dto.getAccountCategory());
 			projectBo.setAccountName(dto.getAccountName());
 			projectBo.setProjectName(dto.getProjectName());
@@ -128,8 +138,10 @@ public class ProjectDetailServiceImpl implements ProjectDetailService {
 			projectBo.setProjectType(dto.getProjectType());
 			projectBo.setBillingCurrency(dto.getBillingCurrency());
 			projectBo.setPoAmount(dto.getPoAmount());
+			projectBo.setResourceCount(dto.getResourceCount());
 			projectBo.setProjectStartDate(DateUtils.reverseDateParsing(dto.getProjectStartDate().toString()));
 			projectBo.setProjectEndDate(DateUtils.reverseDateParsing(dto.getProjectEndDate().toString()));
+			projectBo.setUnitOfMeasurement(dto.getUnitOfMeasurement());
 			projectBo.setDeliverySpoc(dto.getDeliverySpoc());
 			projectBo.setEffortSpoc(dto.getEffortSpoc());
 			projectBo.setPid(dto.getPid());
@@ -171,16 +183,15 @@ public class ProjectDetailServiceImpl implements ProjectDetailService {
 						response.put("projectDetailsList", projectBoList);
 					}
 				} catch (ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					throw new InvalidServiceException("Exception occured while fetching Project Details.");
 				}
 			}
 			
 		} else {
 			accountCategory = accountCategory.isEmpty() ? "" : ("%" + accountCategory + "%").toLowerCase();
 			projectName = projectName.isEmpty() ? "" : ("%" + projectName + "%").toLowerCase();
-			projectType = projectType.isEmpty() ? "" : ("%" + projectType + "%").toLowerCase();
-			status = status.isEmpty() ? "" : ("%" + status + "%").toLowerCase();
+			projectType = projectType.isEmpty() ? "" : (projectType).toLowerCase();
+			status = status.isEmpty() ? "" : (status).toLowerCase();
 		
 
 		try {
@@ -205,14 +216,13 @@ public class ProjectDetailServiceImpl implements ProjectDetailService {
 
 	@Override
 	public Map<String, Object> deleteProjectDetail(String id) {
-		Optional<ProjectDTO> projectDetailList;
 		Map<String, Object> response;
 		response = new HashMap<>();
 
-		projectDetailList = projectDetailRepository.fetchProjectDetail(id);
-		if (projectDetailList.isPresent()) {
+		Integer projectDetailcount =projectDetailRepository.fetchProjectDetailid(Integer.valueOf(id));
+		if (projectDetailcount > 0) {
 			try {
-				projectDetailRepository.deleteProjectDetail(id);
+				projectDetailRepository.deleteProjectDetail(Integer.valueOf(id));
 				response.put("message", "Project Details deleted successfully");
 				response.put("status", HttpStatus.OK.value());
 			} catch (Exception e) {
@@ -239,7 +249,7 @@ public class ProjectDetailServiceImpl implements ProjectDetailService {
 						pDto.getSubmissionMode(), pDto.getProjectType(), pDto.getBillingCurrency(), pDto.getPoAmount(),
 						pDto.getProjectStartDate(), pDto.getProjectEndDate(), pDto.getStatus(), pDto.getDeliverySpoc(),
 						pDto.getEffortSpoc(), pDto.getQuote(), pDto.getContract(), pDto.getPo(), LocalDateTime.now(),
-						pDto.getPid(), pDto.getModifiedBy());
+						pDto.getPid(), pDto.getModifiedBy(),pDto.getUnitOfMeasurement(),pDto.getResourceCount());
 				if(projectBo.getResources().size() > 0) {
 					for (ResourceMap r : projectBo.getResources()) {
 						Optional<ResourceMapDTO> rmapList;
@@ -276,15 +286,47 @@ public class ProjectDetailServiceImpl implements ProjectDetailService {
 	@Override
 	public Map<String, Object> getResourceByPID(String pId) {
 		List<ResourceDTO> resourcesList;
+		Integer pidcount;
 		Map<String, Object> response;
 		response = new HashMap<>();
 
 		try {
-			resourcesList = resourcesRepository.fetchResourcesDetail(pId);
+			pidcount=projectDetailRepository.checkpidscount(pId);
+			if(pidcount==0) {
+				resourcesList = resourcesRepository.fetchResourcesDetail(pId);
+				if (resourcesList.size() > 0) {
+					response.put("message", "Resources details fetched successfully.");
+					response.put("status", HttpStatus.OK.value());
+					response.put("resourceDetails", resourcesList);
+				} else {
+					response.put("message", "No data found");
+					response.put("status", HttpStatus.NO_CONTENT.value());
+				}	
+			}
+			else
+			{
+				response.put("message", "Already Exists for this PID");
+				response.put("status", HttpStatus.CONFLICT.value());
+			}
+		
+		} catch (Exception e) {
+			throw new InvalidServiceException("Exception occured while fetching Resources details.");
+		}
+		return response;
+	}
+
+	@Override
+	public Map<String, Object> getcResource() {
+		List<ResourceDTO> resourcesList;
+		Map<String, Object> response;
+		response = new HashMap<>();
+
+		try {
+			resourcesList = resourcesRepository.fetchcResourcesDetail();
 			if (resourcesList.size() > 0) {
-				response.put("message", "Resources details fetched successfully.");
+				response.put("message", "Contract Resources details fetched successfully.");
 				response.put("status", HttpStatus.OK.value());
-				response.put("projectDetails", resourcesList);
+				response.put("cresourceDetails", resourcesList);
 			} else {
 				response.put("message", "No data found");
 				response.put("status", HttpStatus.NO_CONTENT.value());
@@ -294,5 +336,12 @@ public class ProjectDetailServiceImpl implements ProjectDetailService {
 		}
 		return response;
 	}
+
+	@Override
+	public Map<String, Object> getResourceByPIDonupdate(String pId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 
 }

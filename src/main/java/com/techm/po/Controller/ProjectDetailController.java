@@ -90,4 +90,18 @@ public class ProjectDetailController {
 		response = projectDetailService.getResourceByPID(pId);
 		return response;
 	}
+	
+	@GetMapping("/fetch/cresources")
+	public Map<String, Object> getcResource() {
+		Map<String, Object> response;
+		response = projectDetailService.getcResource();
+		return response;
+	}
+	
+	@GetMapping("/fetch/resourcesonupdate")
+	public Map<String, Object> getResourceByPIDonupdate(@RequestParam(name="pId", required = true) String pId) {
+		Map<String, Object> response;
+		response = projectDetailService.getResourceByPIDonupdate(pId);
+		return response;
+	}
 }

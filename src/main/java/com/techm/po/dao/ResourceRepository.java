@@ -2,8 +2,12 @@ package com.techm.po.dao;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.techm.po.model.bo.ResourceMap;
@@ -31,8 +35,16 @@ public interface ResourceRepository extends JpaRepository<ResourceDTO, String>{
 	@Query(value="UPDATE tbl_resources SET associate_name=:associateName, band=:band,contact_number=:contactNumber,email=:email WHERE associate_id=:associateId", nativeQuery=true)
 	void modifyResourceDetails(String associateId, String associateName, String band, String contactNumber, String email);
 	
-	@Query(value="SELECT * FROM tbl_resources pDtl WHERE pDtl.p_id=?1", nativeQuery=true)
+	@Query(value="SELECT * FROM tbl_resources pDtl WHERE pDtl.p_id=?1 and status='ACTIVE'", nativeQuery=true)
 	List<ResourceDTO> fetchResourcesDetail(String pId);
+
+	@Query(value="SELECT * FROM tbl_resources pDtl WHERE pDtl.p_id='00000' and status='ACTIVE'", nativeQuery=true)
+	List<ResourceDTO> fetchcResourcesDetail();
+
+	@Transactional
+	@Modifying
+	@Query(value="UPDATE tbl_resources SET p_id=?2 where associate_id=?1",nativeQuery=true)
+	void updatecontractpid(String associateId,String getpId);
 
 //	void updatePidFlag(ResourceMap r);
 

@@ -1,6 +1,7 @@
 package com.techm.po.dao;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -12,5 +13,8 @@ public interface ResourceMapRepository extends JpaRepository<ResourceMapDTO, Int
 void updateProjectinfo(Integer resourceMapId, String location, LocalDate startdate, LocalDate enddate, String linked,
 		String pid, int ratePerHour);
 
+
+@Query(value="SELECT * FROM tbl_resource_map pDtl WHERE pDtl.p_id=?1 and linked='Y'", nativeQuery=true)
+List<ResourceMapDTO> fetchResourcesDetail(String pId);
 
 }

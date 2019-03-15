@@ -15,4 +15,8 @@ public interface ProjectDetailService {
 	Map<String, Object> modifyprojectDetails(ProjectBO projectBo);
 
 	Map<String, Object> getResourceByPID(String pId);
+
+	Map<String, Object> getcResource();
+
+	Map<String, Object> getResourceByPIDonupdate(String pId);
 }

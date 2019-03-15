@@ -3,16 +3,15 @@ package com.techm.po.model.bo;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.techm.po.model.dto.ResourceMapDTO;
-
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 public class ProjectBO {
-
+private Integer id;
 	private List<ResourceMap> resources;
+	private List<ResourceMap> contractToPid;
 	private String accountCategory;
 	private String accountName;
 	private String projectName;
@@ -25,6 +24,20 @@ public class ProjectBO {
 	private String poAmount;
 	private String projectStartDate;
 	private String projectEndDate;
+	private Integer resourceCount;
+	public Integer getResourceCount() {
+		return resourceCount;
+	}
+	public void setResourceCount(Integer resourceCount) {
+		this.resourceCount = resourceCount;
+	}
+	private Integer unitOfMeasurement;
+	public Integer getUnitOfMeasurement() {
+		return unitOfMeasurement;
+	}
+	public void setUnitOfMeasurement(Integer unitOfMeasurement) {
+		this.unitOfMeasurement = unitOfMeasurement;
+	}
 	private String deliverySpoc;
 	private String effortSpoc;
 	private String pid;
@@ -185,16 +198,33 @@ public class ProjectBO {
 	public void setResources(List<ResourceMap> resources) {
 		this.resources = resources;
 	}
+	
+	public List<ResourceMap> getContractToPid() {
+		return contractToPid;
+	}
+
+	public void setContractToPid(List<ResourceMap> contractToPid) {
+		this.contractToPid = contractToPid;
+	}
+	
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
 	@Override
 	public String toString() {
-		return "ProjectBO [resources=" + resources + ", accountCategory=" + accountCategory + ", accountName="
-				+ accountName + ", projectName=" + projectName + ", customerName=" + customerName + ", customerSpoc="
-				+ customerSpoc + ", approvalMethod=" + approvalMethod + ", submissionMode=" + submissionMode
-				+ ", projectType=" + projectType + ", billingCurrency=" + billingCurrency + ", poAmount=" + poAmount
-				+ ", projectStartDate=" + projectStartDate + ", projectEndDate=" + projectEndDate + ", deliverySpoc="
-				+ deliverySpoc + ", effortSpoc=" + effortSpoc + ", pid=" + pid + ", quote=" + quote + ", contract="
-				+ contract + ", po=" + po + ", createdBy=" + createdBy + ", createdDate=" + createdDate
-				+ ", modifiedBy=" + modifiedBy + ", modifiedDate=" + modifiedDate + ", status=" + status + "]";
+		return "ProjectBO [id=" + id + ", resources=" + resources + ", contractToPid=" + contractToPid
+				+ ", accountCategory=" + accountCategory + ", accountName=" + accountName + ", projectName="
+				+ projectName + ", customerName=" + customerName + ", customerSpoc=" + customerSpoc
+				+ ", approvalMethod=" + approvalMethod + ", submissionMode=" + submissionMode + ", projectType="
+				+ projectType + ", billingCurrency=" + billingCurrency + ", poAmount=" + poAmount
+				+ ", projectStartDate=" + projectStartDate + ", projectEndDate=" + projectEndDate + ", resourceCount="
+				+ resourceCount + ", unitOfMeasurement=" + unitOfMeasurement + ", deliverySpoc=" + deliverySpoc
+				+ ", effortSpoc=" + effortSpoc + ", pid=" + pid + ", quote=" + quote + ", contract=" + contract
+				+ ", po=" + po + ", createdBy=" + createdBy + ", createdDate=" + createdDate + ", modifiedBy="
+				+ modifiedBy + ", modifiedDate=" + modifiedDate + ", status=" + status + "]";
 	}
 	
 }

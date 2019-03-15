@@ -9,9 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import lombok.Getter;
-import lombok.Setter;
-
 @Entity
 @Table(name="tbl_project")
 
@@ -32,6 +29,8 @@ public class ProjectDTO {
 	private String poAmount;
 	private LocalDate projectStartDate;
 	private LocalDate projectEndDate;
+	private Integer unitOfMeasurement;
+private Integer resourceCount;
 	private String deliverySpoc;
 	private String effortSpoc;
 	private String pid;
@@ -108,6 +107,12 @@ public class ProjectDTO {
 	}
 	public void setPoAmount(String poAmount) {
 		this.poAmount = poAmount;
+	}
+	public Integer getUnitOfMeasurement() {
+		return unitOfMeasurement;
+	}
+	public void setUnitOfMeasurement(Integer unitOfMeasurement) {
+		this.unitOfMeasurement = unitOfMeasurement;
 	}
 	public LocalDate getProjectStartDate() {
 		return projectStartDate;
@@ -186,6 +191,12 @@ public class ProjectDTO {
 	}
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	public Integer getResourceCount() {
+		return resourceCount;
+	}
+	public void setResourceCount(Integer resourceCount) {
+		this.resourceCount = resourceCount;
 	}
 	
 

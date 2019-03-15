@@ -91,6 +91,17 @@ public class ResourceController {
 		response=resourceService.modifyResourceDetails(resource);
 		return response;
 	}
+	
+//	@GetMapping("/getpid")
+//	public ResponseEntity<Object> showPidResources(@RequestParam("pId") String resource){
+//		
+//		Optional<ResourceDTO> resource1 = resourceRepository.findById(resource);
+//		if (!resource1.isPresent()) {
+//			throw new ResourceNotFoundException("id-" + resource);
+//		} else {
+//			return new ResponseEntity<Object>(resource1, HttpStatus.OK);
+//		}
+//	}
 
 }
 
