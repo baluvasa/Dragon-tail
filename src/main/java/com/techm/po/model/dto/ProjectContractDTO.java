@@ -1,5 +1,6 @@
 package com.techm.po.model.dto;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
@@ -14,28 +15,41 @@ public class ProjectContractDTO {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private String contractId;
-	private String contract_number;
+	private Integer contractId;
+	private String contractNumber;
 	private String pid;
-	private String contract_start_date;
-	private String contract_end_date;
+	private LocalDate contractStartDate;
+	private LocalDate contractEndDate;
 	private String createdBy;
 	private LocalDateTime createdDate;
 	private String modifiedBy;
 	private LocalDateTime modifiedDate;	
 	private String status;
-	
-	public String getContractId() {
+	private String quote;
+	private String po;
+	public String getQuote() {
+		return quote;
+	}
+	public void setQuote(String quote) {
+		this.quote = quote;
+	}
+	public String getPo() {
+		return po;
+	}
+	public void setPo(String po) {
+		this.po = po;
+	}
+	public Integer getContractId() {
 		return contractId;
 	}
-	public void setContractId(String contractId) {
+	public void setContractId(Integer contractId) {
 		this.contractId = contractId;
 	}
-	public String getContract_number() {
-		return contract_number;
+	public String getContractNumber() {
+		return contractNumber;
 	}
-	public void setContract_number(String contract_number) {
-		this.contract_number = contract_number;
+	public void setContractNumber(String contractNumber) {
+		this.contractNumber = contractNumber;
 	}
 	public String getPid() {
 		return pid;
@@ -43,17 +57,17 @@ public class ProjectContractDTO {
 	public void setPid(String pid) {
 		this.pid = pid;
 	}
-	public String getContract_start_date() {
-		return contract_start_date;
+	public LocalDate getContractStartDate() {
+		return contractStartDate;
 	}
-	public void setContract_start_date(String contract_start_date) {
-		this.contract_start_date = contract_start_date;
+	public void setContractStartDate(LocalDate contractStartDate) {
+		this.contractStartDate = contractStartDate;
 	}
-	public String getContract_end_date() {
-		return contract_end_date;
+	public LocalDate getContractEndDate() {
+		return contractEndDate;
 	}
-	public void setContract_end_date(String contract_end_date) {
-		this.contract_end_date = contract_end_date;
+	public void setContractEndDate(LocalDate contractEndDate) {
+		this.contractEndDate = contractEndDate;
 	}
 	public String getCreatedBy() {
 		return createdBy;
@@ -87,10 +101,13 @@ public class ProjectContractDTO {
 	}
 	@Override
 	public String toString() {
-		return "ProjectContractDTO [contractId=" + contractId + ", contract_number=" + contract_number + ", pid=" + pid
-				+ ", contract_start_date=" + contract_start_date + ", contract_end_date=" + contract_end_date
-				+ ", createdBy=" + createdBy + ", createdDate=" + createdDate + ", modifiedBy=" + modifiedBy
-				+ ", modifiedDate=" + modifiedDate + ", status=" + status + "]";
+		return "ProjectContractDTO [contractId=" + contractId + ", contractNumber=" + contractNumber + ", pid=" + pid
+				+ ", contractStartDate=" + contractStartDate + ", contractEndDate=" + contractEndDate + ", createdBy="
+				+ createdBy + ", createdDate=" + createdDate + ", modifiedBy=" + modifiedBy + ", modifiedDate="
+				+ modifiedDate + ", status=" + status + ", quote=" + quote + ", po=" + po + "]";
 	}
 
+
+	
+	
 }

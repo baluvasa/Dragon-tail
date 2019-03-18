@@ -8,6 +8,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +22,15 @@ import com.techm.po.dao.ResourceMapRepository;
 import com.techm.po.dao.ResourceRepository;
 import com.techm.po.exception.InvalidServiceException;
 import com.techm.po.model.bo.ProjectBO;
+import com.techm.po.model.bo.ResourceFxBO;
 import com.techm.po.model.bo.ResourceMap;
+import com.techm.po.model.bo.ResoureMapInfoBo;
 import com.techm.po.model.dto.ProjectDTO;
 import com.techm.po.model.dto.ResourceDTO;
 import com.techm.po.model.dto.ResourceMapDTO;
 import com.techm.po.service.ProjectDetailService;
 import com.techm.po.utils.DateUtils;
+
 
 @Service
 public class ProjectDetailServiceImpl implements ProjectDetailService {
@@ -38,6 +44,9 @@ public class ProjectDetailServiceImpl implements ProjectDetailService {
 	private ResourceMapRepository resourceMapRepository;
 //	private ResourceDTO resourcesDto;
 
+	@PersistenceContext
+    public EntityManager em;
+	
 	@Transactional
 	@Override
 	public Map<String, Object> addProject(ProjectBO projectBo) {
@@ -339,8 +348,31 @@ public class ProjectDetailServiceImpl implements ProjectDetailService {
 
 	@Override
 	public Map<String, Object> getResourceByPIDonupdate(String pId) {
-		// TODO Auto-generated method stub
-		return null;
+//		List<ResourceMapDTO> resourcesMapList;		
+		Map<String, Object> response;
+		response = new HashMap<>();
+		
+		try {
+			
+			String query="select NEW com.techm.po.model.bo.ResoureMapInfoBo(rm.pId, r.associateId,r.associateName,rm.associateStartDate,rm.associateEndDate ,r.band,rm.ratePerHour,rm.location,rm.linked)"
+					+ "from ResourceDTO r,ResourceMapDTO rm where r.associateId=rm.associateId and rm.pId = :pId";
+			TypedQuery<ResoureMapInfoBo> typedQuery = em.createQuery(query , ResoureMapInfoBo.class);
+
+			typedQuery.setParameter("pId", pId);	
+			List<ResoureMapInfoBo> resourcesMapList = typedQuery.getResultList();
+//			resourcesMapList = resourceMapRepository.fetchcResourcesDetail(pId);
+			if (resourcesMapList.size() > 0) {
+				response.put("message", "Contract Resources details fetched successfully.");
+				response.put("status", HttpStatus.OK.value());
+				response.put("cresourceDetails", resourcesMapList);
+			} else {
+				response.put("message", "No data found");
+				response.put("status", HttpStatus.NO_CONTENT.value());
+			}
+		} catch (Exception e) {
+			throw new InvalidServiceException("Exception occured while fetching Resources details.");
+		}
+		return response;
 	}
 	
 
