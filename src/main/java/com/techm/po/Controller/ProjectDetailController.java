@@ -111,4 +111,12 @@ public class ProjectDetailController {
 		response = projectDetailService.getPIDs(pid);
 		return response;
 	}
+	
+	@GetMapping("/fetch/piddates")
+	public Map<String, Object> getPIDdates(@RequestParam(name="pid", required = true) String pid) {
+		Map<String, Object> response;
+		response = projectDetailService.getPIDdates(pid);
+		return response;
+	}
 }
+

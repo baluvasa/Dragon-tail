@@ -393,6 +393,25 @@ public class ProjectDetailServiceImpl implements ProjectDetailService {
 		}
 		return response;
 	}
+
+	@Override
+	public Map<String, Object> getPIDdates(String pid) {
+		Optional<ProjectDTO> projectDetailList;
+		Map<String, Object> response;
+		response = new HashMap<>();
+		projectDetailList = projectDetailRepository.fetchProjectDetail(pid);
+		if(projectDetailList.isPresent()) {
+			response.put("message", "PID Already For Another Project.");
+			response.put("status", HttpStatus.OK.value());
+			response.put("piddates", projectDetailList);
+		}
+		else
+		{
+			response.put("message", "PID Not for Any Project.");
+			response.put("status", HttpStatus.NO_CONTENT.value());
+		}
+		return response;
+	}
 	
 
 }

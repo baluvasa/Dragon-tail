@@ -21,4 +21,6 @@ public interface ProjectDetailService {
 	Map<String, Object> getResourceByPIDonupdate(String pId);
 
 	Map<String, Object> getPIDs(String pId);
+
+	Map<String, Object> getPIDdates(String pid);
 }
