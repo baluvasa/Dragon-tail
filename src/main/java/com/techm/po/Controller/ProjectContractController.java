@@ -29,6 +29,13 @@ public class ProjectContractController {
 		return response;
 	}
 	
+	@GetMapping("/fetch/contractsinfo")
+	public Map<String, Object> fetchContractsInfo(@RequestParam(name = "pid", required = true) String pid) {
+		Map<String, Object> response;
+		response = projectContractService.fetchContractsInfo(pid);
+		return response;
+	}
+	
 	@PostMapping("/add")
 	public Map<String, Object> addAccessDetails(@RequestBody ProjectContractDTO projectContractDto){
 		

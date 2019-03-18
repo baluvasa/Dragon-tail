@@ -104,4 +104,11 @@ public class ProjectDetailController {
 		response = projectDetailService.getResourceByPIDonupdate(pId);
 		return response;
 	}
+	
+	@GetMapping("/fetch/checkpid")
+	public Map<String, Object> getPIDs(@RequestParam(name="pid", required = true) String pid) {
+		Map<String, Object> response;
+		response = projectDetailService.getPIDs(pid);
+		return response;
+	}
 }

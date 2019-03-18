@@ -2,6 +2,7 @@ package com.techm.po.service.impl;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -88,6 +89,25 @@ public class ProjectContractServiceImpl implements ProjectContractService {
 			response.put("status", HttpStatus.CREATED.value());			
 		}
 		
+		return response;
+	}
+
+	@Override
+	public Map<String, Object> fetchContractsInfo(String pid) {
+		List<ProjectContractDTO> contractData;
+		Map<String, Object> response;
+		response = new HashMap<>();
+		contractData=projectContractRepositiory.fetchcontractinfobypid(pid);
+		if(contractData.size()>0) {
+			response.put("message", "Contract Details Fetched Successfully.");
+			response.put("status", HttpStatus.OK.value());
+			response.put("contractdetails", contractData);
+		}
+		else
+		{
+			response.put("message", "Contract Details is Not Exisits in any Project");
+			response.put("status", HttpStatus.NO_CONTENT.value());
+		}
 		return response;
 	}
 	

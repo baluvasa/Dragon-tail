@@ -295,13 +295,13 @@ public class ProjectDetailServiceImpl implements ProjectDetailService {
 	@Override
 	public Map<String, Object> getResourceByPID(String pId) {
 		List<ResourceDTO> resourcesList;
-		Integer pidcount;
+//		Integer pidcount;
 		Map<String, Object> response;
 		response = new HashMap<>();
 
 		try {
-			pidcount=projectDetailRepository.checkpidscount(pId);
-			if(pidcount==0) {
+//			pidcount=projectDetailRepository.checkpidscount(pId);
+//			if(pidcount==0) {
 				resourcesList = resourcesRepository.fetchResourcesDetail(pId);
 				if (resourcesList.size() > 0) {
 					response.put("message", "Resources details fetched successfully.");
@@ -311,12 +311,12 @@ public class ProjectDetailServiceImpl implements ProjectDetailService {
 					response.put("message", "No data found");
 					response.put("status", HttpStatus.NO_CONTENT.value());
 				}	
-			}
-			else
-			{
-				response.put("message", "Already Exists for this PID");
-				response.put("status", HttpStatus.CONFLICT.value());
-			}
+//			}
+//			else
+//			{
+//				response.put("message", "Already Exists for this PID");
+//				response.put("status", HttpStatus.CONFLICT.value());
+//			}
 		
 		} catch (Exception e) {
 			throw new InvalidServiceException("Exception occured while fetching Resources details.");
@@ -371,6 +371,25 @@ public class ProjectDetailServiceImpl implements ProjectDetailService {
 			}
 		} catch (Exception e) {
 			throw new InvalidServiceException("Exception occured while fetching Resources details.");
+		}
+		return response;
+	}
+
+	@Override
+	public Map<String, Object> getPIDs(String pid) {
+		// Map<String, Object> response = new HashMap<>();
+		Optional<ProjectDTO> projectDetailList;
+		Map<String, Object> response;
+		response = new HashMap<>();
+		projectDetailList = projectDetailRepository.fetchProjectDetail(pid);
+		if(projectDetailList.isPresent()) {
+			response.put("message", "PID Already For Another Project.");
+			response.put("status", HttpStatus.OK.value());
+		}
+		else
+		{
+			response.put("message", "PID Not for Any Project.");
+			response.put("status", HttpStatus.NO_CONTENT.value());
 		}
 		return response;
 	}

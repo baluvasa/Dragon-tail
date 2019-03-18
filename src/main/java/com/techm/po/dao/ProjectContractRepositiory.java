@@ -1,9 +1,11 @@
 package com.techm.po.dao;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.techm.po.model.dto.ProjectContractDTO;
@@ -19,6 +21,9 @@ public interface ProjectContractRepositiory extends JpaRepository<ProjectContrac
 
 	 @Query("SELECT pc FROM ProjectContractDTO pc where Lower(pc.po)= Lower(:poid)")
 	 Optional<ProjectContractDTO> fetchpoinfo(String poid);
+	 
+	 @Query("SELECT pc FROM ProjectContractDTO pc where pc.pid=:pid")
+	List<ProjectContractDTO> fetchcontractinfobypid(@Param("pid") String pid);
 
 
 }
