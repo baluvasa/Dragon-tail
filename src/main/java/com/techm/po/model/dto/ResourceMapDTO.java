@@ -20,6 +20,7 @@ public class ResourceMapDTO {
 	private int ratePerHour;
 	private String linked;
 	private String contractId;
+	
 
 	private LocalDate associateStartDate;
 	private LocalDate associateEndDate;

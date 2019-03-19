@@ -43,4 +43,7 @@ public interface ProjectDetailRepository extends JpaRepository<ProjectDTO, Strin
 
 	@Query("select count(*) from ProjectDTO pl where pl.id=:id")
 	Integer fetchProjectDetailid(@Param("id") Integer id);
+
+	@Query(value="select distinct pid from tbl_project", nativeQuery=true)
+	List<String> fetchpidList();
 	}

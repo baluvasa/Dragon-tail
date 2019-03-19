@@ -400,9 +400,10 @@ public class ProjectDetailServiceImpl implements ProjectDetailService {
 		Optional<ProjectDTO> projectDetailList;
 		Map<String, Object> response;
 		response = new HashMap<>();
+		try {
 		projectDetailList = projectDetailRepository.fetchProjectDetail(pid);
 		if(projectDetailList.isPresent()) {
-						
+			System.out.println(DateUtils.reverseDateParsing(projectDetailList.get().getProjectStartDate().toString()));
 //			JSONObject jo = new JSONObject();
 //			jo.put("startDate", projectDetailList.get().getProjectStartDate());
 //			jo.put("endDate", projectDetailList.get().getProjectEndDate());
@@ -410,15 +411,43 @@ public class ProjectDetailServiceImpl implements ProjectDetailService {
 			response.put("message", "PID Found.");
 			response.put("status", HttpStatus.OK.value());
 			
-			response.put("piddates",projectDetailList);
+			response.put("startdate",DateUtils.reverseDateParsing(projectDetailList.get().getProjectStartDate().toString()));
+			response.put("enddate",DateUtils.reverseDateParsing(projectDetailList.get().getProjectEndDate().toString()));
+			response.put("currency",projectDetailList.get().getBillingCurrency());
 		}
 		else
 		{
 			response.put("message", "PID Not for Any Project.");
 			response.put("status", HttpStatus.NO_CONTENT.value());
 		}
+		} catch (Exception e) {
+			throw new InvalidServiceException("Exception occured while fetching Resources details.");
+		}
 		return response;
 	}
+	
+	@Override
+	public Map<String, Object> getPidList(){
+		Map<String, Object> response;
+		List<String> pidList;
+		response = new HashMap<String, Object>();
+		try {
+			pidList = projectDetailRepository.fetchpidList();
+			if(pidList.size() > 0) {
+				response.put("pidList", pidList);
+				response.put("status", HttpStatus.OK.value());
+			}
+			
+			else {
+				response.put("message", "No data found.");
+				response.put("status", HttpStatus.NO_CONTENT.value());
+			}
+		}
+		catch (Exception e) {
+			throw new InvalidServiceException("Exception occured while fetching Resources details.");
+		}
+		return response;
+		}
 	
 
 }

@@ -60,14 +60,14 @@ public class ProjectContractServiceImpl implements ProjectContractService {
 		if(contractData.isPresent() || qouteData.isPresent() || poData.isPresent()) {
 			String m="";
 			if(contractData.isPresent() ) {
-				m +="Contract Id"+ projectContractDto.getContractNumber() +",";
+				m +="Contract Id "+ projectContractDto.getContractNumber() +",";
 			}
 			if(qouteData.isPresent() ) {
-				m +="Quote Id"+  projectContractDto.getQuote() +",";
+				m +="Quote Id "+  projectContractDto.getQuote() +",";
 			}
 
 			if(poData.isPresent() ) {
-				m += "PO Id"+ projectContractDto.getPo() +",";
+				m += "PO Id "+ projectContractDto.getPo() +",";
 			}
 			
 			response.put("message", m.substring(0, m.length() - 1)+ " already Exisits for Project");

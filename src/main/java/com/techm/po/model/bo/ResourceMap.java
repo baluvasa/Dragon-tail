@@ -11,6 +11,7 @@ private String location;
 private int ratePerHour;
 private String linked;
 private String pId;
+private String contractId;
 public String getLinked() {
 	return linked;
 }
@@ -18,7 +19,12 @@ public void setLinked(String linked) {
 	this.linked = linked;
 }
 
-
+public String getContractId() {
+	return contractId;
+}
+public void setContractId(String contractId) {
+	this.contractId = contractId;
+}
 public String getpId() {
 	return pId;
 }
@@ -63,9 +69,10 @@ public void setAssociateStartDate(String associateStartDate) {
 }
 @Override
 public String toString() {
-	return "ResourceMap [associateId=" + associateId + ", associateStartDate=" + associateStartDate
-			+ ", associateEndDate=" + associateEndDate + ", location=" + location + ", ratePerHour=" + ratePerHour
-			+ ", linked=" + linked + ", pId=" + pId + "]";
+	return "ResourceMap [resourceMapId=" + resourceMapId + ", associateId=" + associateId + ", associateStartDate="
+			+ associateStartDate + ", associateEndDate=" + associateEndDate + ", location=" + location
+			+ ", ratePerHour=" + ratePerHour + ", linked=" + linked + ", pId=" + pId 
+			+ ", contractId=" + contractId + "]";
 }
 
 }
