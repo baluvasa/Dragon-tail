@@ -22,6 +22,13 @@ public class ProjectContractController {
 	@Autowired
 	private ProjectContractService projectContractService;
 
+	@GetMapping("/fetch/contractslist")
+	public Map<String, Object> fetchContractslist(@RequestParam(name = "pid", required = true) String pid) {
+		Map<String, Object> response;
+		response = projectContractService.fetchContractsList(pid);
+		return response;
+	}
+	
 	@GetMapping("/fetch/contracts")
 	public Map<String, Object> fetchContracts(@RequestParam(name = "cid", required = true) String cid) {
 		Map<String, Object> response;

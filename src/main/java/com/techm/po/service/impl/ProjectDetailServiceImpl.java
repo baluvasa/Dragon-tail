@@ -401,7 +401,7 @@ public class ProjectDetailServiceImpl implements ProjectDetailService {
 		Map<String, Object> response;
 		response = new HashMap<>();
 		try {
-		projectDetailList = projectDetailRepository.fetchProjectDetail(pid);
+		projectDetailList = projectDetailRepository.fetchProjectDetail(pid.toLowerCase());
 		if(projectDetailList.isPresent()) {
 			System.out.println(DateUtils.reverseDateParsing(projectDetailList.get().getProjectStartDate().toString()));
 //			JSONObject jo = new JSONObject();

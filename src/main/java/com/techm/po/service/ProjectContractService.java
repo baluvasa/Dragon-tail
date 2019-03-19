@@ -11,4 +11,6 @@ public interface ProjectContractService {
 	Map<String, Object> adContractDetails(ProjectContractDTO projectContractDto);
 
 	Map<String, Object> fetchContractsInfo(String pid);
+
+	Map<String, Object> fetchContractsList(String pid);
 }

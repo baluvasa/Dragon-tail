@@ -33,12 +33,12 @@ public class ProjectContractServiceImpl implements ProjectContractService {
 		response = new HashMap<>();
 		contractData=projectContractRepositiory.fetchcontractinfo(cid);
 		if(contractData.isPresent()) {
-			response.put("message", "Contract Number is already Exisits for Project");
+			response.put("message", "Contract Number Exists for Project");
 			response.put("status", HttpStatus.CONFLICT.value());
 		}
 		else
 		{
-			response.put("message", "Contract Number is Not Exisits in any Project");
+			response.put("message", "No Contract Number is available.");
 			response.put("status", HttpStatus.OK.value());
 		}
 		return response;
@@ -106,7 +106,26 @@ public class ProjectContractServiceImpl implements ProjectContractService {
 		}
 		else
 		{
-			response.put("message", "Contract Details is Not Exisits in any Project");
+			response.put("message", "No Contract Details are available.");
+			response.put("status", HttpStatus.NO_CONTENT.value());
+		}
+		return response;
+	}
+
+	@Override
+	public Map<String, Object> fetchContractsList(String pid) {
+		List<ProjectContractDTO> contractData;
+		Map<String, Object> response;
+		response = new HashMap<>();
+		contractData=projectContractRepositiory.fetchcontractinfobypid(pid);
+		if(contractData.size()>0) {
+			response.put("message", "Contract Details fetched Succesfully.");
+			response.put("status", HttpStatus.OK.value());
+			response.put("contractsList",contractData);
+		}
+		else
+		{
+			response.put("message", "no data");
 			response.put("status", HttpStatus.NO_CONTENT.value());
 		}
 		return response;

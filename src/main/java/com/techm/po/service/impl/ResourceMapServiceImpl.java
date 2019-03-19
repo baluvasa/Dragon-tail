@@ -2,6 +2,7 @@ package com.techm.po.service.impl;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,7 @@ import com.techm.po.dao.ResourceRepository;
 import com.techm.po.exception.InvalidServiceException;
 import com.techm.po.model.bo.ResourceMap;
 import com.techm.po.model.bo.ResourceMapBO;
+import com.techm.po.model.dto.ProjectDTO;
 import com.techm.po.model.dto.ResourceMapDTO;
 import com.techm.po.service.ResourceMapService;
 import com.techm.po.utils.DateUtils;
@@ -44,7 +46,12 @@ public class ResourceMapServiceImpl implements ResourceMapService{
 				for (ResourceMap r : resourceMapBo.getResources()) {
 					ResourceMapDTO rdto_single;
 					rdto_single = rmapBoToDto(r);
-					resourceMapRepository.save(rdto_single);
+					Optional<ResourceMapDTO> resourceDetailList;
+					
+					resourceDetailList=resourceMapRepository.fetchResourceInfo(rdto_single.getAssociateId().toLowerCase(),rdto_single.getContractId().toLowerCase());
+					if(!resourceDetailList.isPresent()) {
+						resourceMapRepository.save(rdto_single);						
+					}
 				}
 			}
 			if(resourceMapBo.getContractToPid().size()>0) {

@@ -2,6 +2,7 @@ package com.techm.po.dao;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -18,7 +19,8 @@ void updateProjectinfo(Integer resourceMapId, String location, LocalDate startda
 @Query(value="SELECT * FROM tbl_resource_map pDtl WHERE pDtl.p_id=?1 and linked='Y'", nativeQuery=true)
 List<ResourceMapDTO> fetchResourcesDetail(String pId);
 
-//@Query(value="SELECT new com.techm.po.model.bo.ResoureMapInfoBo(  FROM ResourceMapDTO ru LEFT JOIN ResouceDTO rd on ru.pId=rd.pId  WHERE ru.pId=:id ",nativeQuery)
-//List<ResourceMapDTO> fetchcResourcesDetail(@Param("id") String pId);
+@Query("SELECT rmd FROM ResourceMapDTO rmd where Lower(rmd.associateId)=:aid and Lower(rmd.contractId)=:cid")
+Optional<ResourceMapDTO> fetchResourceInfo(@Param("aid") String associateId,@Param("cid") String contractId);
+
 
 }
