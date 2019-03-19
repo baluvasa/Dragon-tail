@@ -70,12 +70,13 @@ public class ProjectInformationController {
 			@RequestParam(name = "projectEndDate", required = true) String projectEndDate,
 			@RequestParam(name = "quote", required = true) String quote,
 			@RequestParam(name = "pId", required = true) String pId,
-			@RequestParam(name = "contract", required = true) String contract) {
+			@RequestParam(name = "contract", required = true) String contract,
+			@RequestParam(name = "yyyyMM", required = true) String yyyyMM) {
 		
 		Map<String, Object> response;
 		response=new HashMap<String, Object>();
 		
-		response = projectInformationService.getPOSummaryDetails(customerName, projectStartDate, projectEndDate, quote, pId, contract);
+		response = projectInformationService.getPOSummaryDetails(customerName, projectStartDate, projectEndDate, quote, pId, contract, yyyyMM);
 		return response;
 	}
 	

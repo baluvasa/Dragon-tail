@@ -165,32 +165,31 @@ public class ProjectInformationServiceImpl implements ProjectInformationService{
 
 	@Override
 	public Map<String, Object> getPOSummaryDetails(String customerName, String projectStartDate, 
-			String projectEndDate, String quote, String pId, String contract) {
+			String projectEndDate, String quote, String pId, String contract, String yyyyMM) {
 		
 		Map<String, Object> response;
 		response=new HashMap<String, Object>();
 		List<ResourceFxBO> resourceFxBO=null;
 		resourceFxBO=new ArrayList<ResourceFxBO>();
 		String fxRateValue=null;
+		String startdate11=null,enddate11=null;
+		LocalDate startdate1=null,enddate1=null; 
 		
 		int totalLeaves=0,totalHolidays=0;
 		
 		try {
 									
-			String startdate11=projectStartDate.split("-")[0]+"-"+projectStartDate.split("-")[1]+"-"+projectStartDate.split("-")[2];
-			String enddate11=projectEndDate.split("-")[0]+"-"+projectEndDate.split("-")[1]+"-"+projectEndDate.split("-")[2];
-			System.out.println("<br>startdate11=="+startdate11);
-			System.out.println("<br>enddate11=="+enddate11);
+			startdate11="01-"+yyyyMM.split("-")[1]+"-"+yyyyMM.split("-")[0];
+			enddate11="31-"+yyyyMM.split("-")[1]+"-"+yyyyMM.split("-")[0];						
 			
-			LocalDate startdate1=DateUtils.parseDate(startdate11);
-			LocalDate enddate1=DateUtils.parseDate(enddate11);
-			System.out.println("<br>LocalDate startdate1=="+startdate1);
-			System.out.println("<br>LocalDate enddate1=="+enddate1);
-			
-			LocalDate projectStart=DateUtils.parseDate(projectStartDate);
-			LocalDate projectEnd=DateUtils.parseDate(projectEndDate);
-			System.out.println("<br>LocalDate projectStart=="+projectStart);
-			System.out.println("<br>LocalDate projectEnd=="+projectEnd);
+			  
+		  System.out.println("<br>startdate11=="+startdate11);
+		  System.out.println("<br>enddate11=="+enddate11);
+		  
+		  startdate1=DateUtils.parseDate(startdate11); 
+		  enddate1=DateUtils.parseDate(enddate11);
+		  System.out.println("<br>LocalDate startdate1=="+startdate1);
+		  System.out.println("<br>LocalDate enddate1=="+enddate1); 
 			
 			try {
 
@@ -206,8 +205,8 @@ public class ProjectInformationServiceImpl implements ProjectInformationService{
 						+ "where r.associateId=rm.associateId and rm.pId=p.pid and "
 						+ "p.pid= :pId and p.quote= :quote and p.contract= :contract";
 				TypedQuery<ResourceFxBO> typedQuery = em.createQuery(query , ResourceFxBO.class);
-				typedQuery.setParameter("projectStart", projectStart);
-				typedQuery.setParameter("projectEnd", projectEnd);
+				typedQuery.setParameter("projectStart", startdate1);
+				typedQuery.setParameter("projectEnd", enddate1);
 				typedQuery.setParameter("quote", quote);
 				typedQuery.setParameter("contract", contract);
 				typedQuery.setParameter("pId", pId);				
