@@ -382,7 +382,7 @@ public class ProjectDetailServiceImpl implements ProjectDetailService {
 		Optional<ProjectDTO> projectDetailList;
 		Map<String, Object> response;
 		response = new HashMap<>();
-		projectDetailList = projectDetailRepository.fetchProjectDetail(pid);
+		projectDetailList = projectDetailRepository.fetchProjectDetail(pid.toLowerCase());
 		if(projectDetailList.isPresent()) {
 			response.put("message", "PID Already For Another Project.");
 			response.put("status", HttpStatus.OK.value());

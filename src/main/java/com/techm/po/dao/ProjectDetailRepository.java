@@ -16,7 +16,7 @@ import com.techm.po.model.dto.ProjectDTO;
 
 public interface ProjectDetailRepository extends JpaRepository<ProjectDTO, String>{
 
-@Query("SELECT pDtl FROM ProjectDTO pDtl WHERE pDtl.pid=:id")
+@Query("SELECT pDtl FROM ProjectDTO pDtl WHERE Lower(pDtl.pid)=:id")
 	Optional<ProjectDTO> fetchProjectDetail(@Param("id") String id);
 
 	@Transactional
