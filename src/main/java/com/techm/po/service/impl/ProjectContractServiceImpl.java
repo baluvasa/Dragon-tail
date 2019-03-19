@@ -81,6 +81,7 @@ public class ProjectContractServiceImpl implements ProjectContractService {
 			projectContractDto.setPid(projectContractDto.getPid());
 			projectContractDto.setQuote(projectContractDto.getQuote());
 			projectContractDto.setPo(projectContractDto.getPo());
+			projectContractDto.setUom(projectContractDto.getUom());
 			projectContractDto.setCreatedBy(projectContractDto.getCreatedBy());
 			projectContractDto.setStatus(DefaultEnums.ACTIVE.name());
 			projectContractDto.setCreatedDate(LocalDateTime.now());

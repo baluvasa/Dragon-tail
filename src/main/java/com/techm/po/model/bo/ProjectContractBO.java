@@ -1,20 +1,9 @@
-package com.techm.po.model.dto;
+package com.techm.po.model.bo;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+public class ProjectContractBO {
 
-@Entity
-@Table(name="tbl_project_contract")
-public class ProjectContractDTO {
-
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer contractId;
 	private String contractNumber;
 	private String pid;
@@ -27,25 +16,6 @@ public class ProjectContractDTO {
 	private String status;
 	private String quote;
 	private String po;
-	private Integer uom;
-	public String getQuote() {
-		return quote;
-	}
-	public void setQuote(String quote) {
-		this.quote = quote;
-	}
-	public String getPo() {
-		return po;
-	}
-	public Integer getUom() {
-		return uom;
-	}
-	public void setUom(Integer uom) {
-		this.uom = uom;
-	}
-	public void setPo(String po) {
-		this.po = po;
-	}
 	public Integer getContractId() {
 		return contractId;
 	}
@@ -106,15 +76,25 @@ public class ProjectContractDTO {
 	public void setStatus(String status) {
 		this.status = status;
 	}
+	public String getQuote() {
+		return quote;
+	}
+	public void setQuote(String quote) {
+		this.quote = quote;
+	}
+	public String getPo() {
+		return po;
+	}
+	public void setPo(String po) {
+		this.po = po;
+	}
 	@Override
 	public String toString() {
-		return "ProjectContractDTO [contractId=" + contractId + ", contractNumber=" + contractNumber + ", pid=" + pid
+		return "ProjectContractBO [contractId=" + contractId + ", contractNumber=" + contractNumber + ", pid=" + pid
 				+ ", contractStartDate=" + contractStartDate + ", contractEndDate=" + contractEndDate + ", createdBy="
 				+ createdBy + ", createdDate=" + createdDate + ", modifiedBy=" + modifiedBy + ", modifiedDate="
-				+ modifiedDate + ", status=" + status + ", quote=" + quote + ", po=" + po + ", uom=" + uom + "]";
+				+ modifiedDate + ", status=" + status + ", quote=" + quote + ", po=" + po + "]";
 	}
-
-
 	
 	
 }

@@ -13,6 +13,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -401,9 +402,15 @@ public class ProjectDetailServiceImpl implements ProjectDetailService {
 		response = new HashMap<>();
 		projectDetailList = projectDetailRepository.fetchProjectDetail(pid);
 		if(projectDetailList.isPresent()) {
-			response.put("message", "PID Already For Another Project.");
+						
+//			JSONObject jo = new JSONObject();
+//			jo.put("startDate", projectDetailList.get().getProjectStartDate());
+//			jo.put("endDate", projectDetailList.get().getProjectEndDate());
+//			System.out.println(jo.toString());
+			response.put("message", "PID Found.");
 			response.put("status", HttpStatus.OK.value());
-			response.put("piddates", projectDetailList);
+			
+			response.put("piddates",projectDetailList);
 		}
 		else
 		{
