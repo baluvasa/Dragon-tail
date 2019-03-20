@@ -3,10 +3,12 @@ package com.techm.po.service.impl;
 import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Stack;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -25,6 +27,7 @@ import com.techm.po.exception.InvalidServiceException;
 import com.techm.po.model.bo.ProjectBO;
 import com.techm.po.model.bo.ResourceFxBO;
 import com.techm.po.model.bo.ResourceMap;
+import com.techm.po.model.bo.ResourceMapLinkedBO;
 import com.techm.po.model.bo.ResoureMapInfoBo;
 import com.techm.po.model.dto.ProjectDTO;
 import com.techm.po.model.dto.ResourceDTO;
@@ -296,6 +299,10 @@ public class ProjectDetailServiceImpl implements ProjectDetailService {
 	@Override
 	public Map<String, Object> getResourceByPID(String pId) {
 		List<ResourceDTO> resourcesList;
+		List<ResourceMapDTO> resourcesMapList;
+		List<ResourceMapLinkedBO> responseList=new ArrayList<ResourceMapLinkedBO>();
+//		ArrayList<String> a = new ArrayList<String>();
+		Collection<String> stringStack = new Stack<>();
 //		Integer pidcount;
 		Map<String, Object> response;
 		response = new HashMap<>();
@@ -304,14 +311,62 @@ public class ProjectDetailServiceImpl implements ProjectDetailService {
 //			pidcount=projectDetailRepository.checkpidscount(pId);
 //			if(pidcount==0) {
 				resourcesList = resourcesRepository.fetchResourcesDetail(pId);
-				if (resourcesList.size() > 0) {
-					response.put("message", "Resources details fetched successfully.");
-					response.put("status", HttpStatus.OK.value());
-					response.put("resourceDetails", resourcesList);
-				} else {
-					response.put("message", "No data found");
-					response.put("status", HttpStatus.NO_CONTENT.value());
-				}	
+				resourcesMapList = resourceMapRepository.fetchResourcesDetail(pId);
+				if (resourcesList.size() > 0 || resourcesMapList.size()>0) {
+					if(resourcesList.size() > 0 && resourcesMapList.size()>0) {
+						for (ResourceDTO r : resourcesList) {
+							for (ResourceMapDTO r1 : resourcesMapList) {
+								if(r.getAssociateId().equals(r1.getAssociateId())) {
+									ResourceMapLinkedBO r2=new ResourceMapLinkedBO();							
+									r2.setResourceMapId(r1.getResourceMapId());
+									r2.setAssociateId(r1.getAssociateId());
+									r2.setAssociateName(r.getAssociateName());
+									r2.setBand(r.getBand());
+									r2.setEmailId(r.getEmailId());
+									r2.setContactNumber(r.getContactNumber());
+									r2.setpId(r.getpId());
+									r2.setLocation(r1.getLocation());
+									r2.setContractId(r1.getContractId());
+									r2.setRatePerHour(r1.getRatePerHour());
+									r2.setLinked(r1.getLinked());
+									r2.setAssociateStartDate(r1.getAssociateStartDate());
+									r2.setAssociateEndDate(r1.getAssociateEndDate());
+									r2.setStatus(r.getStatus());
+									responseList.add(r2);
+//									a.add(r1.getAssociateId());
+									stringStack.add(r1.getAssociateId());
+									}
+						
+							}	
+						}
+					}
+					if (resourcesList.size() > 0)
+					{
+						for (ResourceDTO r : resourcesList) {
+							if(!stringStack.contains(r.getAssociateId().toString())){
+							ResourceMapLinkedBO r2=new ResourceMapLinkedBO();	
+							r2.setResourceMapId(0);
+							r2.setAssociateId(r.getAssociateId());
+							r2.setAssociateName(r.getAssociateName());
+							r2.setBand(r.getBand());
+							r2.setEmailId(r.getEmailId());
+							r2.setContactNumber(r.getContactNumber());
+							r2.setpId(r.getpId());
+							r2.setLocation(null);
+							r2.setContractId(null);
+							r2.setRatePerHour(0);
+							r2.setLinked("N");
+							r2.setAssociateStartDate(null);
+							r2.setAssociateEndDate(null);
+							r2.setStatus(r.getStatus());
+							responseList.add(r2);
+							}
+						}
+					}				
+				}		
+				response.put("message", "Resource Details");
+				response.put("status", HttpStatus.OK.value());
+				response.put("resourceLinkedDetails", responseList);
 //			}
 //			else
 //			{
