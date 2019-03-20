@@ -1,5 +1,6 @@
 package com.techm.po.service.impl;
 
+import java.sql.Date;
 import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -124,7 +125,7 @@ public class ProjectDetailServiceImpl implements ProjectDetailService {
 		pDto.setStatus(projectBo.getStatus());
 		pDto.setDeliverySpoc(projectBo.getDeliverySpoc());
 		pDto.setEffortSpoc(projectBo.getEffortSpoc());
-		pDto.setUnitOfMeasurement(projectBo.getUnitOfMeasurement());
+//		pDto.setUnitOfMeasurement(projectBo.getUnitOfMeasurement());
 		pDto.setPid(projectBo.getPid());
 		pDto.setQuote(projectBo.getQuote());
 		pDto.setContract(projectBo.getContract());
@@ -154,7 +155,7 @@ public class ProjectDetailServiceImpl implements ProjectDetailService {
 			projectBo.setResourceCount(dto.getResourceCount());
 			projectBo.setProjectStartDate(DateUtils.reverseDateParsing(dto.getProjectStartDate().toString()));
 			projectBo.setProjectEndDate(DateUtils.reverseDateParsing(dto.getProjectEndDate().toString()));
-			projectBo.setUnitOfMeasurement(dto.getUnitOfMeasurement());
+//			projectBo.setUnitOfMeasurement(dto.getUnitOfMeasurement());
 			projectBo.setDeliverySpoc(dto.getDeliverySpoc());
 			projectBo.setEffortSpoc(dto.getEffortSpoc());
 			projectBo.setPid(dto.getPid());
@@ -262,7 +263,7 @@ public class ProjectDetailServiceImpl implements ProjectDetailService {
 						pDto.getSubmissionMode(), pDto.getProjectType(), pDto.getBillingCurrency(), pDto.getPoAmount(),
 						pDto.getProjectStartDate(), pDto.getProjectEndDate(), pDto.getStatus(), pDto.getDeliverySpoc(),
 						pDto.getEffortSpoc(), pDto.getQuote(), pDto.getContract(), pDto.getPo(), LocalDateTime.now(),
-						pDto.getPid(), pDto.getModifiedBy(),pDto.getUnitOfMeasurement(),pDto.getResourceCount());
+						pDto.getPid(), pDto.getModifiedBy(),pDto.getResourceCount());
 				if(projectBo.getResources().size() > 0) {
 					for (ResourceMap r : projectBo.getResources()) {
 						Optional<ResourceMapDTO> rmapList;
@@ -329,8 +330,8 @@ public class ProjectDetailServiceImpl implements ProjectDetailService {
 									r2.setContractId(r1.getContractId());
 									r2.setRatePerHour(r1.getRatePerHour());
 									r2.setLinked(r1.getLinked());
-									r2.setAssociateStartDate(r1.getAssociateStartDate());
-									r2.setAssociateEndDate(r1.getAssociateEndDate());
+									r2.setAssociateStartDate(DateUtils.reverseDateParsing(r1.getAssociateStartDate().toString()));
+									r2.setAssociateEndDate(DateUtils.reverseDateParsing(r1.getAssociateEndDate().toString()));
 									r2.setStatus(r.getStatus());
 									responseList.add(r2);
 //									a.add(r1.getAssociateId());

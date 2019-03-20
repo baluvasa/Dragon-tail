@@ -20,8 +20,7 @@ public class DateUtils {
 		}
 		return parsedDate;
 	}
-	
-	
+
 	public static String reverseDateParsing(String date) throws ParseException {
 		String parsedDate = null;
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");

@@ -15,8 +15,8 @@ public class ResourceMapLinkedBO {
     private int ratePerHour;
     private String linked;
     private String contractId;
-    private LocalDate associateStartDate;
-    private LocalDate associateEndDate;
+    private String associateStartDate;
+    private String associateEndDate;
     private String status;
 	public int getResourceMapId() {
 		return resourceMapId;
@@ -84,16 +84,16 @@ public class ResourceMapLinkedBO {
 	public void setContractId(String contractId) {
 		this.contractId = contractId;
 	}
-	public LocalDate getAssociateStartDate() {
+	public String getAssociateStartDate() {
 		return associateStartDate;
 	}
-	public void setAssociateStartDate(LocalDate associateStartDate) {
+	public void setAssociateStartDate(String associateStartDate) {
 		this.associateStartDate = associateStartDate;
 	}
-	public LocalDate getAssociateEndDate() {
+	public String getAssociateEndDate() {
 		return associateEndDate;
 	}
-	public void setAssociateEndDate(LocalDate associateEndDate) {
+	public void setAssociateEndDate(String associateEndDate) {
 		this.associateEndDate = associateEndDate;
 	}
 	public String getStatus() {
