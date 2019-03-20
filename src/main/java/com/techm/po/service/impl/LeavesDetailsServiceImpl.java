@@ -45,7 +45,7 @@ public class LeavesDetailsServiceImpl implements LeavesDetailsService{
 		else {
 			try {
 				dto.setStatus(DefaultEnums.ACTIVE.name());
-				dto.setCreatedDate(LocalDateTime.now());
+				dto.setCreatedDate(LocalDate.now());
 				dto.setAssociateId(LeavesBo.getAssociateId());
 				dto.setAssociateName(LeavesBo.getAssociateName());
 				dto.setRemarks(LeavesBo.getRemarks());
@@ -209,7 +209,7 @@ public class LeavesDetailsServiceImpl implements LeavesDetailsService{
                             System.out.println(leavesDetailsObj);
                             leavesDetailsObj.setLeaveDate(DateUtils.stringDateParsing(LeavesBo.getLeaveDate()));
                             leavesDetailsObj.setRemarks(LeavesBo.getRemarks());
-                            leavesDetailsObj.setModifiedDate(LocalDateTime.now());
+                            leavesDetailsObj.setModifiedDate(LocalDate.now());
                             leavesDetailsObj.setModifiedBy(LeavesBo.getModifiedBy());
                             leavesDetailsRepository.save(leavesDetailsObj);
                             response.put("message","Leaves Details Updated Successfully");
@@ -242,7 +242,7 @@ public class LeavesDetailsServiceImpl implements LeavesDetailsService{
 			try {
 				
 				leavesDetailsObj=leavesDetails.get();
-				leavesDetailsObj.setModifiedDate(LocalDateTime.now());
+				leavesDetailsObj.setModifiedDate(LocalDate.now());
 				leavesDetailsObj.setStatus(DefaultEnums.INACTIVE.name());
 				leavesDetailsRepository.save(leavesDetailsObj);			
 				response.put("message","Leaves Details Deleted Successfully");

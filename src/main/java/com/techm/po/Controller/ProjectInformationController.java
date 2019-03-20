@@ -66,8 +66,6 @@ public class ProjectInformationController {
 	
 	@GetMapping("/fetch/projectInfoList")
 	public Map<String, Object> fetchprojectInfoList(@RequestParam(name = "customerName", required = true) String customerName,
-			@RequestParam(name = "projectStartDate", required = true) String projectStartDate,
-			@RequestParam(name = "projectEndDate", required = true) String projectEndDate,
 			@RequestParam(name = "quote", required = true) String quote,
 			@RequestParam(name = "pId", required = true) String pId,
 			@RequestParam(name = "contract", required = true) String contract,
@@ -76,7 +74,7 @@ public class ProjectInformationController {
 		Map<String, Object> response;
 		response=new HashMap<String, Object>();
 		
-		response = projectInformationService.getPOSummaryDetails(customerName, projectStartDate, projectEndDate, quote, pId, contract, yyyyMM);
+		response = projectInformationService.getPOSummaryDetails(customerName, quote, pId, contract, yyyyMM);
 		return response;
 	}
 	

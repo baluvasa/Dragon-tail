@@ -50,9 +50,10 @@ public interface LeavesDetailsRepository extends JpaRepository<LeavesDTO, String
 	@Query("select ld from LeavesDTO ld where ld.associateId= :id and ld.leaveDate= :date")
 	Optional<LeavesDTO> findByIdDate(String id,LocalDate date);
 
-
-
 	@Query("select ld from LeavesDTO ld where ld.leaveId= :id")
     Optional<LeavesDTO> findByIdLeaveDate(Integer id);
+	
+	@Query(value="select * from tbl_leaves l where l.leave_date between :startdate1 and :enddate1", nativeQuery=true)
+	List<LeavesDTO> getAssociateLeaveDetails(LocalDate startdate1, LocalDate enddate1);
 
 }

@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ProjectBO {
-private Integer id;
+	private int id;
 	private List<ResourceMap> resources;
 	private List<ResourceMap> contractToPid;
 	private String accountCategory;
@@ -24,11 +24,11 @@ private Integer id;
 	private String poAmount;
 	private String projectStartDate;
 	private String projectEndDate;
-	private Integer resourceCount;
-	public Integer getResourceCount() {
+	private int resourceCount;
+	public int getResourceCount() {
 		return resourceCount;
 	}
-	public void setResourceCount(Integer resourceCount) {
+	public void setResourceCount(int resourceCount) {
 		this.resourceCount = resourceCount;
 	}
 	private Integer unitOfMeasurement;
@@ -207,11 +207,8 @@ private Integer id;
 		this.contractToPid = contractToPid;
 	}
 	
-	public Integer getId() {
+	public int getId() {
 		return id;
-	}
-	public void setId(Integer id) {
-		this.id = id;
 	}
 	@Override
 	public String toString() {
@@ -224,7 +221,25 @@ private Integer id;
 				+ resourceCount + ", unitOfMeasurement=" + unitOfMeasurement + ", deliverySpoc=" + deliverySpoc
 				+ ", effortSpoc=" + effortSpoc + ", pid=" + pid + ", quote=" + quote + ", contract=" + contract
 				+ ", po=" + po + ", createdBy=" + createdBy + ", createdDate=" + createdDate + ", modifiedBy="
-				+ modifiedBy + ", modifiedDate=" + modifiedDate + ", status=" + status + "]";
+				+ modifiedBy + ", modifiedDate=" + modifiedDate + ", status=" + status + ", getResourceCount()="
+				+ getResourceCount() + ", getUnitOfMeasurement()=" + getUnitOfMeasurement() + ", getAccountCategory()="
+				+ getAccountCategory() + ", getAccountName()=" + getAccountName() + ", getProjectName()="
+				+ getProjectName() + ", getCustomerName()=" + getCustomerName() + ", getCustomerSpoc()="
+				+ getCustomerSpoc() + ", getApprovalMethod()=" + getApprovalMethod() + ", getSubmissionMode()="
+				+ getSubmissionMode() + ", getProjectType()=" + getProjectType() + ", getBillingCurrency()="
+				+ getBillingCurrency() + ", getPoAmount()=" + getPoAmount() + ", getProjectStartDate()="
+				+ getProjectStartDate() + ", getProjectEndDate()=" + getProjectEndDate() + ", getDeliverySpoc()="
+				+ getDeliverySpoc() + ", getEffortSpoc()=" + getEffortSpoc() + ", getPid()=" + getPid()
+				+ ", getQuote()=" + getQuote() + ", getContract()=" + getContract() + ", getPo()=" + getPo()
+				+ ", getCreatedBy()=" + getCreatedBy() + ", getCreatedDate()=" + getCreatedDate() + ", getModifiedBy()="
+				+ getModifiedBy() + ", getModifiedDate()=" + getModifiedDate() + ", getStatus()=" + getStatus()
+				+ ", getResources()=" + getResources() + ", getContractToPid()=" + getContractToPid() + ", getId()="
+				+ getId() + ", getClass()=" + getClass() + ", hashCode()=" + hashCode() + ", toString()="
+				+ super.toString() + "]";
 	}
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	
 }

@@ -1,7 +1,21 @@
 package com.techm.po.model.bo;
 
 public class LeavesBO {
-
+	
+	private String associateId;
+	private String associateName;
+	private String leaveDate;
+	private String remarks;	
+	private String createdBy;
+	private String modifiedBy;
+	private String modifyDate;
+	private long count;
+	
+	public LeavesBO(String associateId, long count) {
+		this.associateId = associateId;
+		this.count = count;
+	}
+	
 	public String getAssociateId() {
 		return associateId;
 	}
@@ -17,12 +31,7 @@ public class LeavesBO {
 	public String getLeaveDate() {
 		return leaveDate;
 	}
-	@Override
-	public String toString() {
-		return "LeavesBO [associateId=" + associateId + ", associateName=" + associateName + ", leaveDate=" + leaveDate
-				+ ", remarks=" + remarks + ", createdBy=" + createdBy + ", modifiedBy=" + modifiedBy + ", modifyDate="
-				+ modifyDate + "]";
-	}
+	
 	public void setLeaveDate(String leaveDate) {
 		this.leaveDate = leaveDate;
 	}
@@ -51,18 +60,24 @@ public class LeavesBO {
 	public void setLeaveId(Integer leaveId) {
 		this.leaveId = leaveId;
 	}
-	private String associateId;
-	private String associateName;
-	private String leaveDate;
-	private String remarks;	
-	private String createdBy;
-	private String modifiedBy;
-	private String modifyDate;
+		
 	public String getModifyDate() {
 		return modifyDate;
 	}
 	public void setModifyDate(String modifyDate) {
 		this.modifyDate = modifyDate;
+	}	
+	public long getCount() {
+		return count;
+	}
+	public void setCount(long count) {
+		this.count = count;
+	}
+	@Override
+	public String toString() {
+		return "LeavesBO [associateId=" + associateId + ", associateName=" + associateName + ", leaveDate=" + leaveDate
+				+ ", remarks=" + remarks + ", createdBy=" + createdBy + ", modifiedBy=" + modifiedBy + ", modifyDate="
+				+ modifyDate + "]";
 	}
 	
 }

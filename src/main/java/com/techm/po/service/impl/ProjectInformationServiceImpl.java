@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -14,10 +15,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import com.techm.po.dao.LeavesDetailsRepository;
 import com.techm.po.dao.ProjectInformationRepository;
 import com.techm.po.exception.InvalidServiceException;
+import com.techm.po.model.bo.LeavesBO;
 import com.techm.po.model.bo.ProjectBO;
 import com.techm.po.model.bo.ResourceFxBO;
+import com.techm.po.model.dto.LeavesDTO;
 import com.techm.po.model.dto.ProjectDTO;
 import com.techm.po.service.ProjectInformationService;
 import com.techm.po.utils.DateUtils;
@@ -30,6 +34,9 @@ public class ProjectInformationServiceImpl implements ProjectInformationService{
 	
 	@Autowired
 	private ProjectDetailServiceImpl projectDetailServiceImpl;
+	
+	@Autowired
+	private LeavesDetailsRepository leavesDetailsRepository;
 	
 	@PersistenceContext
     public EntityManager em;
@@ -164,8 +171,7 @@ public class ProjectInformationServiceImpl implements ProjectInformationService{
 	}
 
 	@Override
-	public Map<String, Object> getPOSummaryDetails(String customerName, String projectStartDate, 
-			String projectEndDate, String quote, String pId, String contract, String yyyyMM) {
+	public Map<String, Object> getPOSummaryDetails(String customerName, String quote, String pId, String contract, String yyyyMM) {
 		
 		Map<String, Object> response;
 		response=new HashMap<String, Object>();
@@ -174,11 +180,11 @@ public class ProjectInformationServiceImpl implements ProjectInformationService{
 		String fxRateValue=null;
 		String startdate11=null,enddate11=null;
 		LocalDate startdate1=null,enddate1=null; 
-		
-		int totalLeaves=0,totalHolidays=0;
-		
+		//List<LeavesDTO> leavesBOList;
+		//leavesBOList=new ArrayList<LeavesDTO>();	
 		try {
-									
+			//Map<String,String> mmMap=new HashMap<String,String>();
+			//mmMap.put("Jan", "january");
 			startdate11="01-"+yyyyMM.split("-")[1]+"-"+yyyyMM.split("-")[0];
 			enddate11="31-"+yyyyMM.split("-")[1]+"-"+yyyyMM.split("-")[0];						
 			
@@ -196,7 +202,7 @@ public class ProjectInformationServiceImpl implements ProjectInformationService{
 				//resourceFxBO=projectInformationRepository.getPOSummaryDetails(accountCategory, accountName, projectName, yyyyMMM, customerName, projectStartDate, projectEndDate, currency, pId, startdate1, enddate1);
 				//System.out.println("<br>results=="+);
 				String query="select NEW com.techm.po.model.bo.ResourceFxBO(rm.pId, r.associateId,r.associateName,"
-						+ "rm.associateStartDate,rm.associateEndDate ,r.band, p.uof,"
+						+ "rm.associateStartDate,rm.associateEndDate ,r.band, p.unitOfMeasurement,"
 						+ "rm.ratePerHour * cast((select fr.fxRate from FxRatesDTO fr where fr.fxDate = "
 						+ "(select fx.fxDate from FxRatesDTO fx where fx.fxDate "
 						+ "between :projectStart and :projectEnd and fx.status = 'ACTIVE') and fr.status='ACTIVE') as float), "
@@ -214,6 +220,20 @@ public class ProjectInformationServiceImpl implements ProjectInformationService{
 				
 				//List<ResourceFxBO> results=projectInformationRepository.getPOSummaryDetails(customerName, projectStart, 
 						//projectEnd, quote, pId, contract);
+				//leavesBOList=leavesDetailsRepository.getAssociateLeaveDetails(startdate1, enddate1);
+				/*String query1="select l.associateId as associate, count(l) as count from LeavesDTO as l where l.leaveDate between :startdate1 and :enddate1 group by (l.associateId)";
+				TypedQuery<Object[]> typedQuery1 = (TypedQuery<Object[]>) em.createQuery(query1);
+				typedQuery1.setParameter("startdate1", startdate1);
+				typedQuery1.setParameter("enddate1", enddate1);
+				List<Object[]> leavesBOList = typedQuery1.getResultList();*/
+				
+				/*List<Object[]> results1 = em.createQuery("select l.associateId as associate, count(l) as count from LeavesDTO as l where l.leaveDate between :startdate1 and :enddate1 group by (l.associateId)").getResultList();
+				for (Object[] result : results1) {
+				    String associate = (String) result[0];
+				    int count = ((Number) result[1]).intValue();
+				}*/
+				
+				//System.out.println("totalLeaves=="+leavesBOList);
 				System.out.println("<br>results=="+results);
 				if(results.size()>0) {
 					response.put("projectInfoList", results);
@@ -226,10 +246,7 @@ public class ProjectInformationServiceImpl implements ProjectInformationService{
 			}catch(Exception e) {
 				e.printStackTrace();
 				throw new InvalidServiceException("Exception occured while Associate Fx Rates details.");
-			}
-			
-			//totalLeaves=projectInformationRepository.getAssociateLeaveDetails(startdate11, enddate11);
-			//System.out.println("totalLeaves=="+totalLeaves);			
+			}						
 			
 			//totalHolidays=projectInformationRepository.getAssociateMonthHolidays(projectName, mm, yyyy);			
 		}catch(Exception e) {

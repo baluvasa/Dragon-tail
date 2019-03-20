@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import com.techm.po.model.bo.LeavesBO;
+import com.techm.po.model.dto.LeavesDTO;
 import com.techm.po.model.dto.ProjectDTO;
 import com.techm.po.model.dto.ProjectInformationDTO;
 
@@ -49,8 +51,8 @@ public interface ProjectInformationRepository extends JpaRepository<ProjectDTO, 
 	List<ProjectDTO> fetchProjectDetails(String accountCategory, String accountName, String projectName,
 			String projectType, LocalDate startdate1, LocalDate enddate1);
 	
-	//@Query("select count(l.leaveDate) from LeavesDTO l where l.leaveDate between :startdate11 and :enddate11")
-	//int getAssociateLeaveDetails(String startdate11, String enddate11);
+	@Query(value="select * from tbl_leaves", nativeQuery=true)
+	List<LeavesDTO> getAssociateLeaveDetails(LocalDate startdate1, LocalDate enddate1);
 	
 	//@Query("select september from public.tbl_holidays where project_name='balu po' and year='yyyy'")
 	//int getAssociateMonthHolidays(String id,String mm,int yyyy);
