@@ -37,7 +37,7 @@ public class ResourceServiceImpl implements ResourceService {
 		if (StringUtils.isEmpty(associateName) && StringUtils.isEmpty(associateId) && StringUtils.isEmpty(band)) {
 
 			try {
-				resourceList = resourceRepository.findAll();
+				resourceList = resourceRepository.findbyactive();
 				if (resourceList.size() != 0 && !resourceList.isEmpty()) {
 					response.put("message", "Resource Details fetched Successfully");
 					response.put("status", HttpStatus.OK.value());
@@ -55,25 +55,7 @@ public class ResourceServiceImpl implements ResourceService {
 			
 			associateName = associateName.isEmpty() ? "": ("%"+associateName+"%").toLowerCase();
 			associateId = associateId.isEmpty() ? "": ("%"+associateId+"%").toLowerCase();
-			band = band.isEmpty() ? "": ("%"+band+"%").toLowerCase();
-//			if (associateName == "") {
-//
-//				associateName = "%null%";
-//			} else {
-//				associateName = "%" + associateName + "%";
-//			}
-//			if (associateId == "") {
-//
-//				associateId = "%null%";
-//			} else {
-//				associateId = "%" + associateId + "%";
-//			}
-//			if (band == "") {
-//
-//				band = "%null%";
-//			} else {
-//				band = "%" + band + "%";
-//			}
+			band = band.isEmpty() ? "": (band).toLowerCase();
 			try {
 				resourceList = resourceRepository.fetchResourceDetails(associateId, associateName, band);
 				if (resourceList.size() != 0 && !resourceList.isEmpty()) {
@@ -95,14 +77,33 @@ public class ResourceServiceImpl implements ResourceService {
 	}
 
 	@Override
-	public Optional<ResourceDTO> showOneResource(String ac_cat) {
-		return resourceRepository.findById(ac_cat);
+	public Map<String, Object> showOneResource(String ac_cat) {
+		Map<String, Object> response;
+		response = new HashMap<>();
+		Optional<ResourceDTO> resourceList = resourceRepository.findByIdResource(ac_cat.toLowerCase());
+		try {
+			if(resourceList .isPresent()) {
+				response.put("message", "Resouce details fetched successfully");
+				response.put("status", HttpStatus.OK.value());
+				response.put("resource", resourceList);	
+			}
+			else
+			{
+				response.put("message", "no data found");
+				response.put("status", HttpStatus.NO_CONTENT.value());	
+			}
+		
+			
+			} catch (Exception e) {
+			throw new InvalidServiceException("Exception occured while adding Resouce details.");
+			}
+		return response;
 	}
 
-	@Override
-	public void deleteResource(String ac_cat) {
-		resourceRepository.deleteById(ac_cat);
-	}
+//	@Override
+//	public void deleteResource(String resid) {
+//		resourceRepository.deleteResourceId(resid);
+//	}
 
 	@Transactional
 	@Override
@@ -168,4 +169,35 @@ public class ResourceServiceImpl implements ResourceService {
 		}
 		return response;
 	}
+
+	@Override
+	public Map<String, Object> deleteOneResource(String resource) {
+		Map<String, Object> response;
+		response = new HashMap<>();
+		Optional<ResourceDTO> resourceList = resourceRepository.findByIdResource(resource);
+		try {
+			if(resourceList .isPresent()) {
+				resourceRepository.deleteResourceId(resource);
+				response.put("message", "Resouce details deleted successfully");
+				response.put("status", HttpStatus.OK.value());
+	
+			}
+			else
+			{
+				response.put("message", "no data found");
+				response.put("status", HttpStatus.NO_CONTENT.value());	
+			}
+		
+			
+			} catch (Exception e) {
+			throw new InvalidServiceException("Exception occured while adding Resouce details.");
+			}
+		return response;
+	}
+
+//	@Override
+//	public Map<String, Object> deleteResource(String ac_cat) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
 }

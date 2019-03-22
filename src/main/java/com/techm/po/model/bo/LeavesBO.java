@@ -2,6 +2,13 @@ package com.techm.po.model.bo;
 
 public class LeavesBO {
 	
+	private int leaveId;
+	public int getLeaveId() {
+		return leaveId;
+	}
+	public void setLeaveId(int leaveId) {
+		this.leaveId = leaveId;
+	}
 	private String associateId;
 	private String associateName;
 	private String leaveDate;
@@ -11,11 +18,19 @@ public class LeavesBO {
 	private String modifyDate;
 	private long count;
 	
+	public LeavesBO() {}
 	public LeavesBO(String associateId, long count) {
 		this.associateId = associateId;
 		this.count = count;
 	}
 	
+	public LeavesBO(int leaveId,String associateId,String associateName,String leaveDate,String remarks) {
+		this.leaveId = leaveId;
+		this.associateId = associateId;
+		this.associateName = associateName;
+		this.leaveDate = leaveDate;
+		this.remarks = remarks;
+	}
 	public String getAssociateId() {
 		return associateId;
 	}
@@ -53,13 +68,7 @@ public class LeavesBO {
 	public void setModifiedBy(String modifiedBy) {
 		this.modifiedBy = modifiedBy;
 	}
-	private Integer leaveId;
-	public Integer getLeaveId() {
-		return leaveId;
-	}
-	public void setLeaveId(Integer leaveId) {
-		this.leaveId = leaveId;
-	}
+
 		
 	public String getModifyDate() {
 		return modifyDate;
@@ -75,9 +84,10 @@ public class LeavesBO {
 	}
 	@Override
 	public String toString() {
-		return "LeavesBO [associateId=" + associateId + ", associateName=" + associateName + ", leaveDate=" + leaveDate
-				+ ", remarks=" + remarks + ", createdBy=" + createdBy + ", modifiedBy=" + modifiedBy + ", modifyDate="
-				+ modifyDate + "]";
+		return "LeavesBO [leaveId=" + leaveId + ", associateId=" + associateId + ", associateName=" + associateName
+				+ ", leaveDate=" + leaveDate + ", remarks=" + remarks + ", createdBy=" + createdBy + ", modifiedBy="
+				+ modifiedBy + ", modifyDate=" + modifyDate + ", count=" + count + "]";
 	}
+
 	
 }
