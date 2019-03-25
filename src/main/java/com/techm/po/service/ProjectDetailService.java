@@ -25,4 +25,6 @@ public interface ProjectDetailService {
 	Map<String, Object> getPIDdates(String pid);
 
 	Map<String, Object> getPidList();
+
+	Map<String, Object> getProjectinfo(String accountcategory, String accountname);
 }

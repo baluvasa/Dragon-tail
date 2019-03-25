@@ -87,8 +87,7 @@ public class ProjectDTO {
 	@Column(name="status")
 	private String status;
 	
-	@Column(name="unit_of_mesurment")
-	private int unitOfMeasurement;
+
 	@Column(name="resource_count")
 	private int resourceCount;
 	public int getResourceCount() {
@@ -97,12 +96,7 @@ public class ProjectDTO {
 	public void setResourceCount(int resourceCount) {
 		this.resourceCount = resourceCount;
 	}
-	public int getUnitOfMeasurement() {
-		return unitOfMeasurement;
-	}
-	public void setUnitOfMeasurement(int unitOfMeasurement) {
-		this.unitOfMeasurement = unitOfMeasurement;
-	}
+
 	public int getId() {
 		return id;
 	}
@@ -257,8 +251,8 @@ public class ProjectDTO {
 				+ deliverySpoc + ", effortSpoc=" + effortSpoc + ", pid=" + pid + ", quote=" + quote + ", contract="
 				+ contract + ", po=" + po + ", createdBy=" + createdBy + ", createdDate=" + createdDate
 				+ ", modifiedBy=" + modifiedBy + ", modifiedDate=" + modifiedDate + ", status=" + status
-				+ ", unitOfMeasurement=" + unitOfMeasurement + ", resourceCount=" + resourceCount
-				+ ", getResourceCount()=" + getResourceCount() + ", getUnitOfMeasurement()=" + getUnitOfMeasurement()
+				+ ",  resourceCount=" + resourceCount
+				+ ", getResourceCount()=" + getResourceCount() 
 				+ ", getId()=" + getId() + ", getAccountCategory()=" + getAccountCategory() + ", getAccountName()="
 				+ getAccountName() + ", getProjectName()=" + getProjectName() + ", getCustomerName()="
 				+ getCustomerName() + ", getCustomerSpoc()=" + getCustomerSpoc() + ", getApprovalMethod()="
