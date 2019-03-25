@@ -63,14 +63,7 @@ public class ProjectDTO {
 	@Column(name="pid")
 	private String pid;
 	
-	@Column(name="quote")
-	private String quote;
 	
-	@Column(name="contract")
-	private String contract;
-	
-	@Column(name="po")
-	private String po;
 	
 	@Column(name="created_by")
 	private String createdBy;
@@ -88,14 +81,6 @@ public class ProjectDTO {
 	private String status;
 	
 
-	@Column(name="resource_count")
-	private int resourceCount;
-	public int getResourceCount() {
-		return resourceCount;
-	}
-	public void setResourceCount(int resourceCount) {
-		this.resourceCount = resourceCount;
-	}
 
 	public int getId() {
 		return id;
@@ -193,24 +178,7 @@ public class ProjectDTO {
 	public void setPid(String pid) {
 		this.pid = pid;
 	}
-	public String getQuote() {
-		return quote;
-	}
-	public void setQuote(String quote) {
-		this.quote = quote;
-	}
-	public String getContract() {
-		return contract;
-	}
-	public void setContract(String contract) {
-		this.contract = contract;
-	}
-	public String getPo() {
-		return po;
-	}
-	public void setPo(String po) {
-		this.po = po;
-	}
+
 	public String getCreatedBy() {
 		return createdBy;
 	}
@@ -248,23 +216,10 @@ public class ProjectDTO {
 				+ ", approvalMethod=" + approvalMethod + ", submissionMode=" + submissionMode + ", projectType="
 				+ projectType + ", billingCurrency=" + billingCurrency + ", poAmount=" + poAmount
 				+ ", projectStartDate=" + projectStartDate + ", projectEndDate=" + projectEndDate + ", deliverySpoc="
-				+ deliverySpoc + ", effortSpoc=" + effortSpoc + ", pid=" + pid + ", quote=" + quote + ", contract="
-				+ contract + ", po=" + po + ", createdBy=" + createdBy + ", createdDate=" + createdDate
-				+ ", modifiedBy=" + modifiedBy + ", modifiedDate=" + modifiedDate + ", status=" + status
-				+ ",  resourceCount=" + resourceCount
-				+ ", getResourceCount()=" + getResourceCount() 
-				+ ", getId()=" + getId() + ", getAccountCategory()=" + getAccountCategory() + ", getAccountName()="
-				+ getAccountName() + ", getProjectName()=" + getProjectName() + ", getCustomerName()="
-				+ getCustomerName() + ", getCustomerSpoc()=" + getCustomerSpoc() + ", getApprovalMethod()="
-				+ getApprovalMethod() + ", getSubmissionMode()=" + getSubmissionMode() + ", getProjectType()="
-				+ getProjectType() + ", getBillingCurrency()=" + getBillingCurrency() + ", getPoAmount()="
-				+ getPoAmount() + ", getProjectStartDate()=" + getProjectStartDate() + ", getProjectEndDate()="
-				+ getProjectEndDate() + ", getDeliverySpoc()=" + getDeliverySpoc() + ", getEffortSpoc()="
-				+ getEffortSpoc() + ", getPid()=" + getPid() + ", getQuote()=" + getQuote() + ", getContract()="
-				+ getContract() + ", getPo()=" + getPo() + ", getCreatedBy()=" + getCreatedBy() + ", getCreatedDate()="
-				+ getCreatedDate() + ", getModifiedBy()=" + getModifiedBy() + ", getModifiedDate()=" + getModifiedDate()
-				+ ", getStatus()=" + getStatus() + ", getClass()=" + getClass() + ", hashCode()=" + hashCode()
-				+ ", toString()=" + super.toString() + "]";
+				+ deliverySpoc + ", effortSpoc=" + effortSpoc + ", pid=" + pid + ", createdBy=" + createdBy
+				+ ", createdDate=" + createdDate + ", modifiedBy=" + modifiedBy + ", modifiedDate=" + modifiedDate
+				+ ", status=" + status + "]";
 	}
+
 
 }

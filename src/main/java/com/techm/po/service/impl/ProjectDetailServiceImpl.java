@@ -118,8 +118,7 @@ public class ProjectDetailServiceImpl implements ProjectDetailService {
 		pDto.setSubmissionMode(projectBo.getSubmissionMode());
 		pDto.setProjectType(projectBo.getProjectType());
 		pDto.setBillingCurrency(projectBo.getBillingCurrency());
-		pDto.setPoAmount(projectBo.getPoAmount());
-		pDto.setResourceCount(projectBo.getResourceCount());		
+		pDto.setPoAmount(projectBo.getPoAmount());	
 		pDto.setProjectStartDate(DateUtils.parseDate(projectBo.getProjectStartDate()));
 		pDto.setProjectEndDate(DateUtils.parseDate(projectBo.getProjectEndDate()));
 		pDto.setStatus(projectBo.getStatus());
@@ -127,9 +126,6 @@ public class ProjectDetailServiceImpl implements ProjectDetailService {
 		pDto.setEffortSpoc(projectBo.getEffortSpoc());
 //		pDto.setUnitOfMeasurement(projectBo.getUnitOfMeasurement());
 		pDto.setPid(projectBo.getPid());
-		pDto.setQuote(projectBo.getQuote());
-		pDto.setContract(projectBo.getContract());
-		pDto.setPo(projectBo.getPo());
 		pDto.setCreatedBy(projectBo.getCreatedBy());
 		pDto.setModifiedBy(projectBo.getModifiedBy());
 		pDto.setCreatedDate(LocalDateTime.now());
@@ -152,16 +148,12 @@ public class ProjectDetailServiceImpl implements ProjectDetailService {
 			projectBo.setProjectType(dto.getProjectType());
 			projectBo.setBillingCurrency(dto.getBillingCurrency());
 			projectBo.setPoAmount(dto.getPoAmount());
-			projectBo.setResourceCount(dto.getResourceCount());
 			projectBo.setProjectStartDate(DateUtils.reverseDateParsing(dto.getProjectStartDate().toString()));
 			projectBo.setProjectEndDate(DateUtils.reverseDateParsing(dto.getProjectEndDate().toString()));
 //			projectBo.setUnitOfMeasurement(dto.getUnitOfMeasurement());
 			projectBo.setDeliverySpoc(dto.getDeliverySpoc());
 			projectBo.setEffortSpoc(dto.getEffortSpoc());
 			projectBo.setPid(dto.getPid());
-			projectBo.setQuote(dto.getQuote());
-			projectBo.setContract(dto.getContract());
-			projectBo.setPo(dto.getPo());
 			projectBo.setStatus(dto.getStatus());
 			projectBoList.add(projectBo);
 		}
@@ -262,8 +254,8 @@ public class ProjectDetailServiceImpl implements ProjectDetailService {
 				projectDetailRepository.modifyProjectDetail(pDto.getCustomerSpoc(), pDto.getApprovalMethod(),
 						pDto.getSubmissionMode(), pDto.getProjectType(), pDto.getBillingCurrency(), pDto.getPoAmount(),
 						pDto.getProjectStartDate(), pDto.getProjectEndDate(), pDto.getStatus(), pDto.getDeliverySpoc(),
-						pDto.getEffortSpoc(), pDto.getQuote(), pDto.getContract(), pDto.getPo(), LocalDateTime.now(),
-						pDto.getPid(), pDto.getModifiedBy(),pDto.getResourceCount());
+						pDto.getEffortSpoc(), LocalDateTime.now(),
+						pDto.getPid(), pDto.getModifiedBy());
 				if(projectBo.getResources().size() > 0) {
 					for (ResourceMap r : projectBo.getResources()) {
 						Optional<ResourceMapDTO> rmapList;

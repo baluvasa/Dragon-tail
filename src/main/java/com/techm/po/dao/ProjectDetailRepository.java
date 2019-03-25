@@ -28,10 +28,10 @@ public interface ProjectDetailRepository extends JpaRepository<ProjectDTO, Strin
 	@Modifying
 	@Query(value="UPDATE tbl_project SET customer_spoc=?1, approval_method=?2, submission_mode=?3, project_type=?4, "
 			+ "billing_currency=?5, po_amount=?6, project_start_date=?7, project_end_date=?8, status=?9, "
-			+ "delivery_spoc=?10, effort_spoc=?11, quote=?12, contract=?13, po=?14, modified_date=?15, modified_by=?17,resource_count=?18 WHERE pid=?16", nativeQuery=true)
+			+ "delivery_spoc=?10, effort_spoc=?11, modified_date=?12, modified_by=?14,WHERE pid=?13", nativeQuery=true)
 	void modifyProjectDetail(String customerSpoc, String approvalMethod, String submissionMode, String projectType,
 			String billingCurrency, String poAmount, LocalDate projectStartDate, LocalDate projectEndDate, String status,
-			String deliverySpoc, String effortSpoc, String quote, String contract, String po, LocalDateTime modifiedDate, String pid, String modifiedBy,Integer ResourceCount);
+			String deliverySpoc, String effortSpoc, LocalDateTime modifiedDate, String pid, String modifiedBy);
 
 	@Query("select pDtl from ProjectDTO pDtl where lower(pDtl.accountCategory) like :accountCategory or "
             + "lower(pDtl.projectName) like :projectName or lower(pDtl.projectType) like :projectType or lower(pDtl.status) like :status")
