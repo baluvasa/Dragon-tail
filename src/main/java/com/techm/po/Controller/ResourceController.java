@@ -51,18 +51,26 @@ public class ResourceController {
 	}
 
 	@GetMapping("/show-one-resource")
-	public Map<String, Object>  showOneAccountCategory(@RequestParam("associateId") String resource){
+	public ResponseEntity<Object> showOneAccountCategory(@RequestParam("associateId") String resource){
 		
-		Map<String, Object> response;
-		response = resourceService.showOneResource(resource);
-		return response;
+		Optional<ResourceDTO> resource1 = resourceRepository.findById(resource);
+		if (!resource1.isPresent()) {
+			throw new ResourceNotFoundException("id-" + resource);
+		} else {
+			return new ResponseEntity<Object>(resource1, HttpStatus.OK);
+		}
 	}
 
 	@DeleteMapping("/delete")
-	public Map<String, Object> deleteResource(@RequestParam("associateId") String resource) {
-			Map<String, Object> response;
-		response = resourceService.deleteOneResource(resource);
-		return response;
+	public ResponseEntity<Object> deleteResource(@RequestParam("associateId") String resource) {
+		Optional<ResourceDTO> resource1 = resourceService.showOneResource(resource);
+		if (!resource1.isPresent())
+			throw new ResourceNotFoundException("id-" + resource);
+		resourceService.deleteResource(resource);
+		Map<String, Object> m = new HashMap<>();
+		m.put("message", "Resource Deleted Successfully");
+		m.put("status", HttpStatus.OK.value());
+		return new ResponseEntity<Object>(m, HttpStatus.OK);
 
 	}
 

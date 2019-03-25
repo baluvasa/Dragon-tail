@@ -180,11 +180,17 @@ public class ProjectInformationServiceImpl implements ProjectInformationService{
 		String fxRateValue=null;
 		String startdate11=null,enddate11=null;
 		LocalDate startdate1=null,enddate1=null; 
-		//List<LeavesDTO> leavesBOList;
-		//leavesBOList=new ArrayList<LeavesDTO>();	
+		List<LeavesBO> leavesBOList;
+		leavesBOList=new ArrayList<LeavesBO>();
+		Map<String,Integer> leaveHolidaysMap=new HashMap<String,Integer>();
+		
 		try {
 			//Map<String,String> mmMap=new HashMap<String,String>();
 			//mmMap.put("Jan", "january");
+			//String month=yyyyMM.split("-")[1];
+			//String year=yyyyMM.split("-")[0];
+			String month="march";
+			String year="2019";
 			startdate11="01-"+yyyyMM.split("-")[1]+"-"+yyyyMM.split("-")[0];
 			enddate11="31-"+yyyyMM.split("-")[1]+"-"+yyyyMM.split("-")[0];						
 			
@@ -196,9 +202,9 @@ public class ProjectInformationServiceImpl implements ProjectInformationService{
 		  enddate1=DateUtils.parseDate(enddate11);
 		  System.out.println("<br>LocalDate startdate1=="+startdate1);
 		  System.out.println("<br>LocalDate enddate1=="+enddate1); 
-			
+		  System.out.println("<br>contract=="+contract);
 			try {
-
+				String associate=null;int count=0,monthHolidays=0;
 				//resourceFxBO=projectInformationRepository.getPOSummaryDetails(accountCategory, accountName, projectName, yyyyMMM, customerName, projectStartDate, projectEndDate, currency, pId, startdate1, enddate1);
 				//System.out.println("<br>results=="+);
 				String query="select NEW com.techm.po.model.bo.ResourceFxBO(rm.pId, r.associateId,r.associateName,"
@@ -216,24 +222,24 @@ public class ProjectInformationServiceImpl implements ProjectInformationService{
 				typedQuery.setParameter("quote", quote);
 				typedQuery.setParameter("contract", contract);
 				typedQuery.setParameter("pId", pId);				
-				List<ResourceFxBO> results = typedQuery.getResultList();
+				List<ResourceFxBO> results = typedQuery.getResultList();				
 				
-				//List<ResourceFxBO> results=projectInformationRepository.getPOSummaryDetails(customerName, projectStart, 
-						//projectEnd, quote, pId, contract);
-				//leavesBOList=leavesDetailsRepository.getAssociateLeaveDetails(startdate1, enddate1);
-				/*String query1="select l.associateId as associate, count(l) as count from LeavesDTO as l where l.leaveDate between :startdate1 and :enddate1 group by (l.associateId)";
-				TypedQuery<Object[]> typedQuery1 = (TypedQuery<Object[]>) em.createQuery(query1);
-				typedQuery1.setParameter("startdate1", startdate1);
-				typedQuery1.setParameter("enddate1", enddate1);
-				List<Object[]> leavesBOList = typedQuery1.getResultList();*/
+				String q="select l.associateId as associateId,count(l),h."+month+" from LeavesDTO as l,HolidaysDTO h "
+						+ "where h.year= :year and l.leaveDate between :startdate1 and :enddate1 and l.status='ACTIVE' group by (l.associateId,h."+month+")";
+				TypedQuery<Object[]> typeQuery = em.createQuery(q,Object[].class);
+				typeQuery.setParameter("startdate1", startdate1);
+				typeQuery.setParameter("enddate1", enddate1);
+				typeQuery.setParameter("year", "2019");
+				List<Object[]> results12=typeQuery.getResultList();
+				for (Object[] result : results12) {
+				    associate = (String) result[0];
+				    count = ((Number) result[1]).intValue();
+				    monthHolidays = ((Number) result[2]).intValue();
+				    leaveHolidaysMap.put((String) result[0],((Number) result[1]).intValue());				    
+				}
 				
-				/*List<Object[]> results1 = em.createQuery("select l.associateId as associate, count(l) as count from LeavesDTO as l where l.leaveDate between :startdate1 and :enddate1 group by (l.associateId)").getResultList();
-				for (Object[] result : results1) {
-				    String associate = (String) result[0];
-				    int count = ((Number) result[1]).intValue();
-				}*/
-				
-				//System.out.println("totalLeaves=="+leavesBOList);
+				System.out.println("<br>monthHolidays=="+monthHolidays);
+				System.out.println("totalLeavesMap=="+leaveHolidaysMap);
 				System.out.println("<br>results=="+results);
 				if(results.size()>0) {
 					response.put("projectInfoList", results);

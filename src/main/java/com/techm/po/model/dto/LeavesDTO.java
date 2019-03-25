@@ -13,6 +13,27 @@ import javax.persistence.Table;
 @Entity
 @Table(name="tbl_leaves")
 public class LeavesDTO {
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private int leaveId;
+	@Column(name="associate_id")
+	private String associateId;
+	@Column(name="associate_name")
+	private String associateName;
+	@Column(name="leave_date")
+	private LocalDate leaveDate;
+	@Column(name="remarks")
+	private String remarks;
+	@Column(name="created_by")
+	private String createdBy;
+	@Column(name="created_date")
+	private LocalDate createdDate;
+	@Column(name="modified_by")
+	private String modifiedBy;
+	@Column(name="modified_date")
+	private LocalDate modifiedDate;
+	@Column(name="status")
+	private String status;
 
 	public int getLeaveId() {
 		return leaveId;
@@ -50,13 +71,6 @@ public class LeavesDTO {
 	public void setCreatedBy(String createdBy) {
 		this.createdBy = createdBy;
 	}
-	
-	public LocalDate getCreatedDate() {
-		return createdDate;
-	}
-	public void setCreatedDate(LocalDate createdDate) {
-		this.createdDate = createdDate;
-	}
 	public LocalDate getModifiedDate() {
 		return modifiedDate;
 	}
@@ -68,36 +82,21 @@ public class LeavesDTO {
 	}
 	public void setModifiedBy(String modifiedBy) {
 		this.modifiedBy = modifiedBy;
+	}	
+	
+	public LocalDate getCreatedDate() {
+		return createdDate;
 	}
-	
-	
+	public void setCreatedDate(LocalDate createdDate) {
+		this.createdDate = createdDate;
+	}
 	public String getStatus() {
 		return status;
 	}
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int leaveId;
-	@Column(name="associate_id")
-	private String associateId;
-	@Column(name="associate_name")
-	private String associateName;
-	@Column(name="leave_date")
-	private LocalDate leaveDate;
-	@Column(name="remarks")
-	private String remarks;
-	@Column(name="created_by")
-	private String createdBy;
-	@Column(name="created_date")
-	private LocalDate createdDate;
-	@Column(name="modified_by")
-	private String modifiedBy;
-	@Column(name="modified_date")
-	private LocalDate modifiedDate;
-	@Column(name="status")
-	private String status;
+	
 	@Override
 	public String toString() {
 		return "LeavesDTO [leaveId=" + leaveId + ", associateId=" + associateId + ", associateName=" + associateName
@@ -110,4 +109,5 @@ public class LeavesDTO {
 				+ getStatus() + ", getClass()=" + getClass() + ", hashCode()=" + hashCode() + ", toString()="
 				+ super.toString() + "]";
 	}
+
 }

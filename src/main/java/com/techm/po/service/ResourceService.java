@@ -13,17 +13,15 @@ public interface ResourceService {
 
 //List<ResourceDTO> showAllResource();
 
-Map<String, Object>  showOneResource(String ac_cat);
+Optional<ResourceDTO> showOneResource(String ac_cat);
 
-//Map<String, Object> deleteResource(String ac_cat);
+void deleteResource(String ac_cat);
 
 Map<String, Object> addResource(ResourceBO resourcebo);
 
 Map<String, Object> showAllResource(String associateId, String associateName, String band);
 
 Map<String, Object> modifyResourceDetails(ResourceBO resource);
-
-Map<String, Object> deleteOneResource(String resource);
 
 }
 

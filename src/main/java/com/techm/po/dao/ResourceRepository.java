@@ -1,7 +1,6 @@
 package com.techm.po.dao;
 
 import java.util.List;
-import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -22,8 +21,8 @@ public interface ResourceRepository extends JpaRepository<ResourceDTO, String>{
 //   + "rd.associateName like :searchTerm1 or rd.band like :searchTerm2") 
 //   List<ResourceDTO> fetchResourceDetails(@Param("searchTerm")  String searchTerm,@Param("searchTerm1") String associateName,@Param("searchTerm2") String band);
   
-  @Query("select rd from ResourceDTO rd where lower(rd.associateId) like :associateId or "
-  + "lower(rd.associateName) like :associateName or lower(rd.band) like :band and status='ACTIVE'") 
+  @Query("select rd from ResourceDTO rd where lower(rd.associateId) like lower(concat('%',:associateId,'%')) or "
+  + "lower(rd.associateName) like lower(concat('%',:associateName,'%')) or lower(rd.band) like lower(concat('%',:band,'%'))") 
   List<ResourceDTO> fetchResourceDetails(String associateId,String associateName,String band);
   
   @Query(value="select res.*, poa.accruals_amount as accrualsAmount, poa.accruals_hours as accrualsHours, poa.build_amount as buildAmount, "
@@ -46,17 +45,6 @@ public interface ResourceRepository extends JpaRepository<ResourceDTO, String>{
 	@Modifying
 	@Query(value="UPDATE tbl_resources SET p_id=?2 where associate_id=?1",nativeQuery=true)
 	void updatecontractpid(String associateId,String getpId);
-
-	@Transactional
-	@Modifying
-	@Query("UPDATE ResourceDTO SET status='INACTIVE' where associateId=:id")
-	void deleteResourceId(@Param("id") String resid);
-
-	@Query("select rd from ResourceDTO rd where rd.status='ACTIVE'") 
-	List<ResourceDTO> findbyactive();
-
-	@Query("select rd from ResourceDTO rd where LOWER(rd.associateId)=:id and rd.status='ACTIVE'") 
-	Optional<ResourceDTO> findByIdResource(@Param("id") String ac_cat);
 
 //	void updatePidFlag(ResourceMap r);
 

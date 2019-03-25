@@ -125,13 +125,5 @@ public class ProjectDetailController {
 		response = projectDetailService.getPidList();
 		return response;
 	}
-	@GetMapping("/fetch/projectinfo")
-	public Map<String, Object> getProjectinfo(@RequestParam(name="accountcategory", required = true) String accountcategory,
-			@RequestParam(name="accountname", required = true) String accountname
-			) {
-		Map<String, Object> response;
-		response = projectDetailService.getProjectinfo(accountcategory,accountname);
-		return response;
-	}
 }
 

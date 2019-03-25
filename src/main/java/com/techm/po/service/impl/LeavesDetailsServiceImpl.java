@@ -1,6 +1,5 @@
 package com.techm.po.service.impl;
 
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -46,7 +45,7 @@ public class LeavesDetailsServiceImpl implements LeavesDetailsService{
 		else {
 			try {
 				dto.setStatus(DefaultEnums.ACTIVE.name());
-				dto.setCreatedDate(LocalDate.now());
+				//dto.setCreatedDate(LocalDate.now());
 				dto.setAssociateId(LeavesBo.getAssociateId());
 				dto.setAssociateName(LeavesBo.getAssociateName());
 				dto.setRemarks(LeavesBo.getRemarks());
@@ -62,15 +61,7 @@ public class LeavesDetailsServiceImpl implements LeavesDetailsService{
 			}
 		}		
 	}
-	public List<LeavesBO> mapDtoToBo(List<LeavesDTO> leavesData) throws ParseException {
-
-		List<LeavesBO> leavesBoList = new ArrayList<LeavesBO>();
-		for (LeavesDTO dto : leavesData) {
-			LeavesBO leavesBO=new LeavesBO(dto.getLeaveId(), dto.getAssociateId(), dto.getAssociateName(), DateUtils.reverseDateParsing(dto.getLeaveDate().toString()), dto.getRemarks());
-			leavesBoList.add(leavesBO);
-		}
-		return leavesBoList;
-	}
+	
 	@Override
 	@Transactional
 	public Map<String, Object> fetchLeavesDetails(String id, String name, String monthYear){
@@ -78,8 +69,6 @@ public class LeavesDetailsServiceImpl implements LeavesDetailsService{
 		Map<String, Object> response;
 		response=new HashMap<String, Object>();		
 		List<LeavesDTO> leavesData;
-
-		List<LeavesBO> leavesBoList = new ArrayList<LeavesBO>();
 		leavesData=new ArrayList<LeavesDTO>();
 		String startdate;
 		String enddate;
@@ -94,15 +83,15 @@ public class LeavesDetailsServiceImpl implements LeavesDetailsService{
 	try {
 				
 				//leavesData=leavesDetailsRepository.findAll();				
-				leavesData=leavesDetailsRepository.findAllleavesinfo();
+				leavesData=leavesDetailsRepository.findAll();
 				if(leavesData.size()!=0 && !leavesData.isEmpty()) {
-					leavesBoList = mapDtoToBo(leavesData);
 					response.put("message", "Leaves Details Fetched Successfully");
 					response.put("status", HttpStatus.OK.value());
-					response.put("leavesDetails", leavesBoList);
+					response.put("leavesDetails", leavesData);
 				}else {
 					response.put("message", "No Data Found");
 					response.put("status", HttpStatus.NO_CONTENT.value());
+					response.put("leavesDetails", leavesData);
 				}
 				
 			}catch(Exception e) {
@@ -120,14 +109,13 @@ public class LeavesDetailsServiceImpl implements LeavesDetailsService{
 					//leavesData=leavesDetailsRepository.findAll();				
 					leavesData=leavesDetailsRepository.fetchLeavesDetailsdateempty(id, name);
 					if(leavesData.size()!=0 && !leavesData.isEmpty()) {
-
-						leavesBoList = mapDtoToBo(leavesData);
 						response.put("message", "Leaves Details Fetched Successfully");
 						response.put("status", HttpStatus.OK.value());
-						response.put("leavesDetails", leavesBoList);
+						response.put("leavesDetails", leavesData);
 					}else {
 						response.put("message", "No Data Found");
 						response.put("status", HttpStatus.NO_CONTENT.value());
+						response.put("leavesDetails", leavesData);
 					}
 					
 				}catch(Exception e) {
@@ -146,14 +134,13 @@ public class LeavesDetailsServiceImpl implements LeavesDetailsService{
 					//leavesData=leavesDetailsRepository.findAll();				
 					leavesData=leavesDetailsRepository.fetchLeavesDetails(id, name,startdate1 ,enddate1);
 					if(leavesData.size()!=0 && !leavesData.isEmpty()) {
-
-						leavesBoList = mapDtoToBo(leavesData);
 						response.put("message", "Leaves Details Fetched Successfully");
 						response.put("status", HttpStatus.OK.value());
-						response.put("leavesDetails", leavesBoList);
+						response.put("leavesDetails", leavesData);
 					}else {
 						response.put("message", "No Data Found");
 						response.put("status", HttpStatus.NO_CONTENT.value());
+						response.put("leavesDetails", leavesData);
 					}
 					
 				}catch(Exception e) {
@@ -220,9 +207,9 @@ public class LeavesDetailsServiceImpl implements LeavesDetailsService{
                      try {
                             leavesDetailsObj=leavesDetails.get();                
                             System.out.println(leavesDetailsObj);
-                            leavesDetailsObj.setLeaveDate(DateUtils.parseDate(LeavesBo.getLeaveDate()));
+                            leavesDetailsObj.setLeaveDate(DateUtils.stringDateParsing(LeavesBo.getLeaveDate()));
                             leavesDetailsObj.setRemarks(LeavesBo.getRemarks());
-                            leavesDetailsObj.setModifiedDate(LocalDate.now());
+                            //leavesDetailsObj.setModifiedDate(LocalDate.now());
                             leavesDetailsObj.setModifiedBy(LeavesBo.getModifiedBy());
                             leavesDetailsRepository.save(leavesDetailsObj);
                             response.put("message","Leaves Details Updated Successfully");
@@ -255,7 +242,7 @@ public class LeavesDetailsServiceImpl implements LeavesDetailsService{
 			try {
 				
 				leavesDetailsObj=leavesDetails.get();
-				leavesDetailsObj.setModifiedDate(LocalDate.now());
+				//leavesDetailsObj.setModifiedDate(LocalDate.now());
 				leavesDetailsObj.setStatus(DefaultEnums.INACTIVE.name());
 				leavesDetailsRepository.save(leavesDetailsObj);			
 				response.put("message","Leaves Details Deleted Successfully");

@@ -51,9 +51,6 @@ public interface ProjectInformationRepository extends JpaRepository<ProjectDTO, 
 	List<ProjectDTO> fetchProjectDetails(String accountCategory, String accountName, String projectName,
 			String projectType, LocalDate startdate1, LocalDate enddate1);
 	
-	@Query(value="select * from tbl_leaves", nativeQuery=true)
-	List<LeavesDTO> getAssociateLeaveDetails(LocalDate startdate1, LocalDate enddate1);
-	
 	//@Query("select september from public.tbl_holidays where project_name='balu po' and year='yyyy'")
 	//int getAssociateMonthHolidays(String id,String mm,int yyyy);
 	
