@@ -46,4 +46,7 @@ public interface ProjectDetailRepository extends JpaRepository<ProjectDTO, Strin
 
 	@Query(value="select distinct pid from tbl_project", nativeQuery=true)
 	List<String> fetchpidList();
+	
+	@Query("select pl from ProjectDTO pl where lower(pl.accountCategory)=:category and lower(pl.accountName)=:name")
+	List<ProjectDTO> fetchProjectDetailinfo(@Param("category") String accountcategory,@Param("name") String accountname);
 	}

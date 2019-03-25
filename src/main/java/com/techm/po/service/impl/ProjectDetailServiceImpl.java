@@ -504,6 +504,35 @@ public class ProjectDetailServiceImpl implements ProjectDetailService {
 		}
 		return response;
 		}
+
+	@Override
+	public Map<String, Object> getProjectinfo(String accountcategory, String accountname) {
+
+		List<ProjectDTO> projectDetailList = new ArrayList<ProjectDTO>();
+		List<ProjectBO> projectBoList = new ArrayList<ProjectBO>();
+		Map<String, Object> response;
+		response = new HashMap<>();
+		try {
+			
+				
+				projectDetailList = projectDetailRepository.fetchProjectDetailinfo(accountcategory.toLowerCase(),accountname.toLowerCase());
+				if (projectDetailList.size() != 0 && !projectDetailList.isEmpty()) {
+				projectBoList = mapDtoToBo(projectDetailList);
+				response.put("message", "Project Details fetched Successfully");
+				response.put("status", HttpStatus.OK.value());
+				response.put("projectDetailsList", projectBoList);
+			} else {
+				response.put("message", "No data found.");
+				response.put("status", HttpStatus.NO_CONTENT.value());
+				response.put("projectDetailsList", projectBoList);
+			}
+			
+			
+		} catch (Exception e) {
+			throw new InvalidServiceException("error occured");
+		}
+		return response;
+	}
 	
 
 }
