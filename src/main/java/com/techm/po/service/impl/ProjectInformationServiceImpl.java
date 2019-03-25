@@ -180,11 +180,14 @@ public class ProjectInformationServiceImpl implements ProjectInformationService{
 		String fxRateValue=null;
 		String startdate11=null,enddate11=null;
 		LocalDate startdate1=null,enddate1=null; 
-		//List<LeavesDTO> leavesBOList;
-		//leavesBOList=new ArrayList<LeavesDTO>();	
+		List<LeavesDTO> leavesBOList;
+		leavesBOList=new ArrayList<LeavesDTO>();
+		Map<String,Integer> leaveHolidaysMap=new HashMap<String,Integer>();
 		try {
 			//Map<String,String> mmMap=new HashMap<String,String>();
 			//mmMap.put("Jan", "january");
+			String month="march";
+			String year=yyyyMM.split("-")[0];
 			startdate11="01-"+yyyyMM.split("-")[1]+"-"+yyyyMM.split("-")[0];
 			enddate11="31-"+yyyyMM.split("-")[1]+"-"+yyyyMM.split("-")[0];						
 			
@@ -198,18 +201,18 @@ public class ProjectInformationServiceImpl implements ProjectInformationService{
 		  System.out.println("<br>LocalDate enddate1=="+enddate1); 
 			
 			try {
-
+				String associate=null;int count=0,monthHolidays=0;
 				//resourceFxBO=projectInformationRepository.getPOSummaryDetails(accountCategory, accountName, projectName, yyyyMMM, customerName, projectStartDate, projectEndDate, currency, pId, startdate1, enddate1);
 				//System.out.println("<br>results=="+);
 				String query="select NEW com.techm.po.model.bo.ResourceFxBO(rm.pId, r.associateId,r.associateName,"
-						+ "rm.associateStartDate,rm.associateEndDate ,r.band, p.unitOfMeasurement,"
+						+ "rm.associateStartDate,rm.associateEndDate ,r.band, pc.uom,"
 						+ "rm.ratePerHour * cast((select fr.fxRate from FxRatesDTO fr where fr.fxDate = "
 						+ "(select fx.fxDate from FxRatesDTO fx where fx.fxDate "
 						+ "between :projectStart and :projectEnd and fx.status = 'ACTIVE') and fr.status='ACTIVE') as float), "
 						+ "EXTRACT(DAY FROM rm.associateEndDate-now()) as releasedate ) "
-						+ "from ResourceDTO r,ResourceMapDTO rm ,ProjectDTO p "
-						+ "where r.associateId=rm.associateId and rm.pId=p.pid and "
-						+ "p.pid= :pId and p.quote= :quote and p.contract= :contract";
+						+ "from ResourceDTO r,ResourceMapDTO rm ,ProjectDTO p,ProjectContractDTO pc "
+						+ "where r.associateId=rm.associateId and rm.pId=p.pid and p.pid=pc.pid and "
+						+ "p.pid= :pId and pc.quote= :quote and pc.contractNumber= :contract";
 				TypedQuery<ResourceFxBO> typedQuery = em.createQuery(query , ResourceFxBO.class);
 				typedQuery.setParameter("projectStart", startdate1);
 				typedQuery.setParameter("projectEnd", enddate1);
@@ -217,6 +220,20 @@ public class ProjectInformationServiceImpl implements ProjectInformationService{
 				typedQuery.setParameter("contract", contract);
 				typedQuery.setParameter("pId", pId);				
 				List<ResourceFxBO> results = typedQuery.getResultList();
+				
+				String q="select l.associateId as associateId,count(l),h."+month+" from LeavesDTO as l,HolidaysDTO h "
+						+ "where h.year= :year and l.leaveDate between :startdate1 and :enddate1 and l.status='ACTIVE' group by (l.associateId,h."+month+")";
+				TypedQuery<Object[]> typeQuery = em.createQuery(q,Object[].class);
+				typeQuery.setParameter("startdate1", startdate1);
+				typeQuery.setParameter("enddate1", enddate1);
+				typeQuery.setParameter("year", year);
+				List<Object[]> results12=typeQuery.getResultList();
+				for (Object[] result : results12) {
+				    associate = (String) result[0];
+				    count = ((Number) result[1]).intValue();
+				    monthHolidays = ((Number) result[2]).intValue();
+				    leaveHolidaysMap.put((String) result[0],((Number) result[1]).intValue());				    
+				}
 				
 				//List<ResourceFxBO> results=projectInformationRepository.getPOSummaryDetails(customerName, projectStart, 
 						//projectEnd, quote, pId, contract);
@@ -233,7 +250,7 @@ public class ProjectInformationServiceImpl implements ProjectInformationService{
 				    int count = ((Number) result[1]).intValue();
 				}*/
 				
-				//System.out.println("totalLeaves=="+leavesBOList);
+				System.out.println("totalLeaves=="+leavesBOList);
 				System.out.println("<br>results=="+results);
 				if(results.size()>0) {
 					response.put("projectInfoList", results);
