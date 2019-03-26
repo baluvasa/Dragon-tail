@@ -98,6 +98,7 @@ public class ProjectInformationServiceImpl implements ProjectInformationService{
 		
 		System.out.println("<br>in fetchProjectDetails method==");
 		Map<String, Object> response;
+		List<ProjectBO> projectBOList;
 		response=new HashMap<String, Object>();
 		LocalDate startdate1=null;
 		LocalDate enddate1=null;
@@ -156,7 +157,9 @@ public class ProjectInformationServiceImpl implements ProjectInformationService{
 			System.out.println("<br>results=="+projectDTOList);
 			
 			if(projectDTOList.size()>0) {
-				response.put("projectDetails", projectDTOList);
+				projectDetailServiceImpl = new ProjectDetailServiceImpl();
+				projectBOList = projectDetailServiceImpl.mapDtoToBo(projectDTOList);
+				response.put("projectDetails", projectBOList);
 				response.put("status", HttpStatus.OK.value());
 			}				
 			else {
@@ -184,9 +187,14 @@ public class ProjectInformationServiceImpl implements ProjectInformationService{
 		leavesBOList=new ArrayList<LeavesDTO>();
 		Map<String,Integer> leaveHolidaysMap=new HashMap<String,Integer>();
 		try {
-			//Map<String,String> mmMap=new HashMap<String,String>();
-			//mmMap.put("Jan", "january");
-			String month="march";
+			Map<String,String> mmMap=new HashMap<String,String>();
+			mmMap.put("Jan", "january");	mmMap.put("Feb", "february");
+			mmMap.put("Mar", "march");		mmMap.put("Apr", "april");
+			mmMap.put("May", "may");		mmMap.put("Jun", "June");
+			mmMap.put("Jul", "july");		mmMap.put("Aug", "august");
+			mmMap.put("Sep", "september");	mmMap.put("Oct", "october");
+			mmMap.put("Nov", "november");	mmMap.put("Dec", "december");
+			String month=mmMap.get(yyyyMM.split("-")[1]);
 			String year=yyyyMM.split("-")[0];
 			startdate11="01-"+yyyyMM.split("-")[1]+"-"+yyyyMM.split("-")[0];
 			enddate11="31-"+yyyyMM.split("-")[1]+"-"+yyyyMM.split("-")[0];						
@@ -203,7 +211,7 @@ public class ProjectInformationServiceImpl implements ProjectInformationService{
 			try {
 				String associate=null;int count=0,monthHolidays=0;
 				//resourceFxBO=projectInformationRepository.getPOSummaryDetails(accountCategory, accountName, projectName, yyyyMMM, customerName, projectStartDate, projectEndDate, currency, pId, startdate1, enddate1);
-				//System.out.println("<br>results=="+);
+				System.out.println("<br>results=="+startdate1+" "+enddate1+" "+quote+" "+contract+" "+pId+" "+month+" "+year);
 				String query="select NEW com.techm.po.model.bo.ResourceFxBO(rm.pId, r.associateId,r.associateName,"
 						+ "rm.associateStartDate,rm.associateEndDate ,r.band, pc.uom,"
 						+ "rm.ratePerHour * cast((select fr.fxRate from FxRatesDTO fr where fr.fxDate = "
@@ -249,8 +257,8 @@ public class ProjectInformationServiceImpl implements ProjectInformationService{
 				    String associate = (String) result[0];
 				    int count = ((Number) result[1]).intValue();
 				}*/
-				
-				System.out.println("totalLeaves=="+leavesBOList);
+				System.out.println("monthHolidays=="+monthHolidays);
+				System.out.println("totalLeaves=="+leaveHolidaysMap);
 				System.out.println("<br>results=="+results);
 				if(results.size()>0) {
 					response.put("projectInfoList", results);
