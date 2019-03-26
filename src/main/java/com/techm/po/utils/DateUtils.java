@@ -3,6 +3,7 @@ package com.techm.po.utils;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
@@ -21,6 +22,20 @@ public class DateUtils {
 		return parsedDate;
 	}
 
+	public static String parseDateToString(LocalDate date) {
+		//LocalDate parsedDate = null;
+		String str=null;
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MMM-yyyy");
+		
+		if(null != date) {
+			//LocalDate localDate = LocalDate.parse(date, formatter);
+			//parsedDate = localDate;
+			str=formatter.format(date);
+			System.out.println("<br>str==="+str);
+		}
+		return str;
+	}
+	
 	public static String reverseDateParsing(String date) throws ParseException {
 		String parsedDate = null;
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");

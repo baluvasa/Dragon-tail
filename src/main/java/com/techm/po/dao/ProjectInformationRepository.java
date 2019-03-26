@@ -45,11 +45,11 @@ public interface ProjectInformationRepository extends JpaRepository<ProjectDTO, 
 	List<ResourceFxBO> getPOSummaryDetails(String customerName, LocalDate projectStart, 
 			LocalDate projectEnd, String quote, String pId, String contract);*/
 	
-	@Query(value="select * from tbl_project p where lower(p.account_category) like :accountCategory and lower(p.account_name) like :accountName " + 
+	/*@Query(value="select * from tbl_project p where lower(p.account_category) like :accountCategory and lower(p.account_name) like :accountName " + 
 			"and lower(p.project_name) like :projectName and lower(p.project_type) like :projectType and p.created_date between :startdate1 " + 
 			"and :enddate1", nativeQuery=true)
 	List<ProjectDTO> fetchProjectDetails(String accountCategory, String accountName, String projectName,
-			String projectType, LocalDate startdate1, LocalDate enddate1);
+			String projectType, LocalDate startdate1, LocalDate enddate1);*/
 	
 	@Query(value="select * from tbl_leaves", nativeQuery=true)
 	List<LeavesDTO> getAssociateLeaveDetails(LocalDate startdate1, LocalDate enddate1);

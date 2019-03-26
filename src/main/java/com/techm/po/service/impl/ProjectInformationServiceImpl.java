@@ -1,7 +1,9 @@
 package com.techm.po.service.impl;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +22,7 @@ import com.techm.po.dao.ProjectInformationRepository;
 import com.techm.po.exception.InvalidServiceException;
 import com.techm.po.model.bo.LeavesBO;
 import com.techm.po.model.bo.ProjectBO;
+import com.techm.po.model.bo.ProjectDetailsBO;
 import com.techm.po.model.bo.ResourceFxBO;
 import com.techm.po.model.dto.LeavesDTO;
 import com.techm.po.model.dto.ProjectDTO;
@@ -115,10 +118,10 @@ public class ProjectInformationServiceImpl implements ProjectInformationService{
 				
 			}else {
 				
-				accountCategory=accountCategory.isEmpty()? "%%": ("%"+accountCategory+"%").toLowerCase();
-				accountName=accountName.isEmpty()? "%%": ("%"+accountName+"%").toLowerCase();
-				projectName=projectName.isEmpty()? "%%": ("%"+projectName+"%").toLowerCase();
-				projectType=projectType.isEmpty()? "%%": ("%"+projectType+"%").toLowerCase();					
+				accountCategory=accountCategory.isEmpty()? "": ("%"+accountCategory+"%").toLowerCase();
+				accountName=accountName.isEmpty()? "": ("%"+accountName+"%").toLowerCase();
+				projectName=projectName.isEmpty()? "": ("%"+projectName+"%").toLowerCase();
+				projectType=projectType.isEmpty()? "": ("%"+projectType+"%").toLowerCase();	
 				
 			}
 			
@@ -137,28 +140,46 @@ public class ProjectInformationServiceImpl implements ProjectInformationService{
 			
 			startdate1=DateUtils.parseDate(startdate11);
 			enddate1=DateUtils.parseDate(enddate11);
-			System.out.println("<br>LocalDate startdate1=="+startdate1);
-			System.out.println("<br>LocalDate enddate1=="+enddate1);
+			/*
+			 * System.out.println("<br>LocalDate startdate1=="+startdate1);
+			 * System.out.println("<br>LocalDate enddate1=="+enddate1);
+			 * System.out.println("<br>LocalDate accountCategory=="+accountCategory);
+			 * System.out.println("<br>LocalDate accountName=="+accountName);
+			 * System.out.println("<br>LocalDate projectName=="+projectName);
+			 * System.out.println("<br>LocalDate projectType=="+projectType);
+			 */
 			
 			/*String query="select p from ProjectDTO p where p.accountCategory= :accountCategory and p.accountName= :accountName "
 					+ "and p.projectName= :projectName and p.projectType= :projectType and p.createdDate between :projectStartDate "
-					+ "and :projectEndDate";
+					+ "and :projectEndDate";*/
+			String query="select NEW com.techm.po.model.bo.ProjectDetailsBO(p.accountCategory, p.accountName, "
+					+ "p.projectName, p.customerName, p.customerSpoc, p.approvalMethod, p.submissionMode, "
+					+ "p.projectType, p.billingCurrency, p.poAmount,p.projectStartDate,p.projectEndDate, "
+					+ "pc.uom, p.deliverySpoc, p.effortSpoc, p.pid, pc.quote, pc.contractNumber, pc.po, "
+					+ "p.createdBy, p.createdDate, p.modifiedBy, p.modifiedDate, p.status) "
+					+ "from ProjectDTO p,ProjectContractDTO pc where lower(p.accountCategory) like :accountCategory "
+					+ "and lower(p.accountName) like :accountName and lower(p.projectName) like :projectName "
+					+ "and lower(p.projectType) like :projectType and p.projectStartDate <= :projectStartDate  and p.projectEndDate >= :projectEndDate "
+					+ "and pc.pid=p.pid";
 			System.out.println("<br>query=="+query);
-			TypedQuery<ProjectDTO> typedQuery = em.createQuery(query , ProjectDTO.class);
+			TypedQuery<ProjectDetailsBO> typedQuery = em.createQuery(query , ProjectDetailsBO.class);
 			typedQuery.setParameter("accountCategory", accountCategory);
 			typedQuery.setParameter("accountName", accountName);
 			typedQuery.setParameter("projectName", projectName);
 			typedQuery.setParameter("projectType", projectType);
 			typedQuery.setParameter("projectStartDate", startdate1);
 			typedQuery.setParameter("projectEndDate", enddate1);
-			List<ProjectDTO> results = typedQuery.getResultList();*/
-			List<ProjectDTO> projectDTOList=projectInformationRepository.fetchProjectDetails(accountCategory, accountName, projectName,
-					projectType, startdate1, enddate1);
-			System.out.println("<br>results=="+projectDTOList);
+			List<ProjectDetailsBO> results = typedQuery.getResultList();
+			System.out.println("<br>results in service impl=="+results);
+			//List<ProjectDTO> projectDTOList=projectInformationRepository.fetchProjectDetails(accountCategory, accountName, projectName,
+					//projectType, startdate1, enddate1);
+			//System.out.println("<br>results=="+projectDTOList);
 			
-			if(projectDTOList.size()>0) {
-				projectDetailServiceImpl = new ProjectDetailServiceImpl();
-				projectBOList = projectDetailServiceImpl.mapDtoToBo(projectDTOList);
+			//ProjectBO projectBOObj=new ProjectBO();
+			projectDetailServiceImpl = new ProjectDetailServiceImpl();
+			projectBOList = projectDetailServiceImpl.projectDetailsToBo(results);
+			if(results.size()>0) {
+				
 				response.put("projectDetails", projectBOList);
 				response.put("status", HttpStatus.OK.value());
 			}				
@@ -203,7 +224,8 @@ public class ProjectInformationServiceImpl implements ProjectInformationService{
 		  System.out.println("<br>startdate11=="+startdate11);
 		  System.out.println("<br>enddate11=="+enddate11);
 		  
-		  startdate1=DateUtils.parseDate(startdate11); 
+		  startdate1=DateUtils.parseDate(startdate11);
+		  
 		  enddate1=DateUtils.parseDate(enddate11);
 		  System.out.println("<br>LocalDate startdate1=="+startdate1);
 		  System.out.println("<br>LocalDate enddate1=="+enddate1); 
@@ -260,6 +282,7 @@ public class ProjectInformationServiceImpl implements ProjectInformationService{
 				System.out.println("monthHolidays=="+monthHolidays);
 				System.out.println("totalLeaves=="+leaveHolidaysMap);
 				System.out.println("<br>results=="+results);
+				
 				if(results.size()>0) {
 					response.put("projectInfoList", results);
 					response.put("status", HttpStatus.OK.value());

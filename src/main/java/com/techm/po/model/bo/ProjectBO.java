@@ -25,6 +25,11 @@ public class ProjectBO {
 	private String projectStartDate;
 	private String projectEndDate;
 	private int resourceCount;
+	
+		public ProjectBO() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 	public int getResourceCount() {
 		return resourceCount;
 	}
@@ -240,6 +245,63 @@ public class ProjectBO {
 	public void setId(int id) {
 		this.id = id;
 	}
+	public ProjectBO(String accountCategory, String accountName, String projectName, String customerName,
+			String customerSpoc, String approvalMethod, String submissionMode, String projectType,
+			String billingCurrency, String poAmount,String projectStartDate, String projectEndDate, 
+			Integer unitOfMeasurement, String deliverySpoc, String effortSpoc, String pid, String quote,
+			String contract, String po, String createdBy, LocalDateTime createdDate, String modifiedBy,
+			LocalDateTime modifiedDate, String status) {
 
+		this.accountCategory = accountCategory;
+		this.accountName = accountName;
+		this.projectName = projectName;
+		this.customerName = customerName;
+		this.customerSpoc = customerSpoc;
+		this.approvalMethod = approvalMethod;
+		this.submissionMode = submissionMode;
+		this.projectType = projectType;
+		this.billingCurrency = billingCurrency;
+		this.poAmount = poAmount;
+		this.projectStartDate = projectStartDate; 
+		this.projectEndDate = projectEndDate;
+		this.unitOfMeasurement = unitOfMeasurement;
+		this.deliverySpoc = deliverySpoc;
+		this.effortSpoc = effortSpoc;
+		this.pid = pid;
+		this.quote = quote;
+		this.contract = contract;
+		this.po = po;
+		this.createdBy = createdBy;
+		this.createdDate = createdDate;
+		this.modifiedBy = modifiedBy;
+		this.modifiedDate = modifiedDate;
+		this.status = status;
+		
+	}
+	
+	/*
+	 * public ProjectBO(String accountCategory, String accountName, String
+	 * projectName, String customerName, String customerSpoc, String approvalMethod,
+	 * String submissionMode, String projectType, String billingCurrency, String
+	 * poAmount,String projectStartDate, String projectEndDate, Integer
+	 * unitOfMeasurement, String deliverySpoc, String effortSpoc, String pid, String
+	 * quote, String contract, String po, String createdBy, LocalDateTime
+	 * createdDate, String modifiedBy, LocalDateTime modifiedDate, String status) {
+	 * 
+	 * this.accountCategory = accountCategory; this.accountName = accountName;
+	 * this.projectName = projectName; this.customerName = customerName;
+	 * this.customerSpoc = customerSpoc; this.approvalMethod = approvalMethod;
+	 * this.submissionMode = submissionMode; this.projectType = projectType;
+	 * this.billingCurrency = billingCurrency; this.poAmount = poAmount;
+	 * this.projectStartDate = projectStartDate; this.projectEndDate =
+	 * projectEndDate; this.unitOfMeasurement = unitOfMeasurement; this.deliverySpoc
+	 * = deliverySpoc; this.effortSpoc = effortSpoc; this.pid = pid; this.quote =
+	 * quote; this.contract = contract; this.po = po; this.createdBy = createdBy;
+	 * this.createdDate = createdDate; this.modifiedBy = modifiedBy;
+	 * this.modifiedDate = modifiedDate; this.status = status;
+	 * 
+	 * }
+	 */
+	
 	
 }

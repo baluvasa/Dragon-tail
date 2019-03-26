@@ -26,6 +26,7 @@ import com.techm.po.dao.ResourceMapRepository;
 import com.techm.po.dao.ResourceRepository;
 import com.techm.po.exception.InvalidServiceException;
 import com.techm.po.model.bo.ProjectBO;
+import com.techm.po.model.bo.ProjectDetailsBO;
 import com.techm.po.model.bo.ResourceFxBO;
 import com.techm.po.model.bo.ResourceMap;
 import com.techm.po.model.bo.ResourceMapLinkedBO;
@@ -155,6 +156,44 @@ public class ProjectDetailServiceImpl implements ProjectDetailService {
 			projectBo.setEffortSpoc(dto.getEffortSpoc());
 			projectBo.setPid(dto.getPid());
 			projectBo.setStatus(dto.getStatus());
+			projectBoList.add(projectBo);
+		}
+		return projectBoList;
+	}
+	
+	public List<ProjectBO> projectDetailsToBo(List<ProjectDetailsBO> projectDtoList) throws ParseException {
+
+		List<ProjectBO> projectBoList = new ArrayList<ProjectBO>();
+		for (ProjectDetailsBO dto : projectDtoList) {
+			
+			ProjectBO projectBo = new ProjectBO();
+			
+			projectBo.setAccountCategory(dto.getAccountCategory());
+			projectBo.setAccountName(dto.getAccountName());
+			projectBo.setProjectName(dto.getProjectName());
+			projectBo.setCustomerName(dto.getCustomerName());
+			projectBo.setCustomerSpoc(dto.getCustomerSpoc());
+			projectBo.setApprovalMethod(dto.getApprovalMethod());
+			projectBo.setSubmissionMode(dto.getSubmissionMode());
+			projectBo.setProjectType(dto.getProjectType());
+			projectBo.setBillingCurrency(dto.getBillingCurrency());
+			projectBo.setPoAmount(dto.getPoAmount());
+			projectBo.setProjectStartDate(DateUtils.parseDateToString(dto.getProjectStartDate()));
+			projectBo.setProjectEndDate(DateUtils.parseDateToString(dto.getProjectEndDate()));
+			projectBo.setUnitOfMeasurement(dto.getUnitOfMeasurement());
+			projectBo.setDeliverySpoc(dto.getDeliverySpoc());
+			projectBo.setEffortSpoc(dto.getEffortSpoc());
+			projectBo.setPid(dto.getPid());
+			projectBo.setQuote(dto.getQuote());
+			projectBo.setContract(dto.getContract());
+			projectBo.setPo(dto.getPo());
+			projectBo.setCreatedBy(dto.getCreatedBy());
+			projectBo.setCreatedDate(dto.getCreatedDate());
+			projectBo.setModifiedBy(dto.getModifiedBy());
+			projectBo.setModifiedDate(dto.getModifiedDate());			
+			projectBo.setStatus(dto.getStatus());
+			System.out.println("<br>start=="+projectBo.getProjectStartDate());
+			System.out.println("<br>end==="+projectBo.getProjectEndDate());
 			projectBoList.add(projectBo);
 		}
 		return projectBoList;
