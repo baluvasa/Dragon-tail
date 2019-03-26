@@ -1,6 +1,7 @@
 package com.techm.po.model.bo;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class ResourceFxBO {
 	
@@ -13,6 +14,7 @@ public class ResourceFxBO {
 	private int uof;
 	private float fxrate;
 	private int releasedate;	
+	private List<MonthlyAmounts> monthlyDetails;
 	
 	public ResourceFxBO() {
 		super();
@@ -33,6 +35,23 @@ public class ResourceFxBO {
 		this.releasedate = releasedate;
 		
 	}
+	
+	public ResourceFxBO(String rm, String associateId, String associateName, LocalDate associateStartDate,
+			LocalDate associateEndDate, String band, int uof, float fxrate, int releasedate,
+			List<MonthlyAmounts> monthlyDetails) {
+
+		this.rm = rm;
+		this.associateId = associateId;
+		this.associateName = associateName;
+		this.associateStartDate = associateStartDate;
+		this.associateEndDate = associateEndDate;
+		this.band = band;
+		this.uof = uof;
+		this.fxrate = fxrate;
+		this.releasedate = releasedate;
+		this.monthlyDetails = monthlyDetails;
+	}
+
 	public String getRm() {
 		return rm;
 	}

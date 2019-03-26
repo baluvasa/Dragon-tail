@@ -200,7 +200,9 @@ public class ProjectInformationServiceImpl implements ProjectInformationService{
 		Map<String, Object> response;
 		response=new HashMap<String, Object>();
 		List<ResourceFxBO> resourceFxBO=null;
+		List<ResourceFxBO> superResourceBOList=null;
 		resourceFxBO=new ArrayList<ResourceFxBO>();
+		superResourceBOList=new ArrayList<ResourceFxBO>();
 		String fxRateValue=null;
 		String startdate11=null,enddate11=null;
 		LocalDate startdate1=null,enddate1=null; 
@@ -282,6 +284,12 @@ public class ProjectInformationServiceImpl implements ProjectInformationService{
 				System.out.println("monthHolidays=="+monthHolidays);
 				System.out.println("totalLeaves=="+leaveHolidaysMap);
 				System.out.println("<br>results=="+results);
+				
+				for(ResourceFxBO resourceFxBOObj:results) {
+					//ResourceFxBO 
+					//.resourceFxBOObj.set
+					superResourceBOList.add(resourceFxBOObj);
+				}
 				
 				if(results.size()>0) {
 					response.put("projectInfoList", results);
