@@ -26,6 +26,7 @@ import com.techm.po.model.bo.LeavesBO;
 import com.techm.po.model.bo.MonthlyAmounts;
 import com.techm.po.model.bo.ProjectBO;
 import com.techm.po.model.bo.ProjectDetailsBO;
+import com.techm.po.model.bo.ProjectedTotals;
 import com.techm.po.model.bo.ResourceFxBO;
 import com.techm.po.model.dto.LeavesDTO;
 import com.techm.po.model.dto.ProjectDTO;
@@ -249,6 +250,9 @@ public class ProjectInformationServiceImpl implements ProjectInformationService{
 			
 			try {
 				String associate=null;int count=0,monthHolidays=0;
+				float projectedTotalEfforts=0,projectedEntryAmt=0,projectedUSDAmt=0,tmRecognised=0,fpRecognised=0;
+				float finalAmtUSD=0,finalAmtEntry=0,leftToInvoice=0,totalRecognisedAmt=0,projectedAmt=0,percentage=0;
+				float GAP=0,rusGapDays=0,rusGapHours=0,factor=0,monthlyRecognised=0,monthlyBilled=0;
 				//resourceFxBO=projectInformationRepository.getPOSummaryDetails(accountCategory, accountName, projectName, yyyyMMM, customerName, projectStartDate, projectEndDate, currency, pId, startdate1, enddate1);
 				System.out.println("<br>results=="+startdate1+" "+enddate1+" "+quote+" "+contract+" "+pId+" "+month+" "+year);
 				String query="select NEW com.techm.po.model.bo.ResourceFxBO(rm.pId, r.associateId,r.associateName,"
@@ -282,26 +286,14 @@ public class ProjectInformationServiceImpl implements ProjectInformationService{
 				    leaveHolidaysMap.put((String) result[0],((Number) result[1]).intValue());				    
 				}
 				
-				//List<ResourceFxBO> results=projectInformationRepository.getPOSummaryDetails(customerName, projectStart, 
-						//projectEnd, quote, pId, contract);
-				//leavesBOList=leavesDetailsRepository.getAssociateLeaveDetails(startdate1, enddate1);
-				/*String query1="select l.associateId as associate, count(l) as count from LeavesDTO as l where l.leaveDate between :startdate1 and :enddate1 group by (l.associateId)";
-				TypedQuery<Object[]> typedQuery1 = (TypedQuery<Object[]>) em.createQuery(query1);
-				typedQuery1.setParameter("startdate1", startdate1);
-				typedQuery1.setParameter("enddate1", enddate1);
-				List<Object[]> leavesBOList = typedQuery1.getResultList();*/
 				
-				/*List<Object[]> results1 = em.createQuery("select l.associateId as associate, count(l) as count from LeavesDTO as l where l.leaveDate between :startdate1 and :enddate1 group by (l.associateId)").getResultList();
-				for (Object[] result : results1) {
-				    String associate = (String) result[0];
-				    int count = ((Number) result[1]).intValue();
-				}*/
 				System.out.println("monthHolidays=="+monthHolidays);
 				System.out.println("totalLeaves=="+leaveHolidaysMap);
 				//System.out.println("<br>results=="+results);
 				int workingDays=daysInMonth-monthHolidays;
+				System.out.println("<br>workingDays=="+workingDays);
 				int associateDays=0,associateHours=0,actualHours=0,associateLeaves=0;
-					
+				ProjectedTotals projectedTotalsObj=new ProjectedTotals();
 				for(ResourceFxBO resourceFxBOObj:results) {
 					
 					List<MonthlyAmounts> monthlyAmountsList=new ArrayList<MonthlyAmounts>();
@@ -309,44 +301,83 @@ public class ProjectInformationServiceImpl implements ProjectInformationService{
 					MonthlyAmounts monthlyAmountsObj=new MonthlyAmounts();
 					Amounts proAmounts=new Amounts();
 					Amounts accrAmounts=new Amounts();
+					Amounts billAmounts=new Amounts();
 					System.out.println("<br>resourceFxBOObj=="+resourceFxBOObj);
 					System.out.println("<br>resourceFxBOObj=="+resourceFxBOObj);
 					associateLeaves=leaveHolidaysMap.getOrDefault(resourceFxBOObj.getAssociateId(), 0);
 					//associateLeaves=leaveHolidaysMap.get(resourceFxBOObj.getAssociateId());
 					System.out.println("<br>associateLeaves=="+associateLeaves);
-					associateDays=workingDays-associateLeaves;
+					associateDays=workingDays-(associateLeaves);
 					System.out.println("<br>associateDays"+associateDays);
 					
 					actualHours=workingDays*(resourceFxBOObj.getUof());
+					projectedTotalEfforts+=actualHours;
+					projectedEntryAmt+=resourceFxBOObj.getFxrate()*associateHours;
+					projectedUSDAmt+=resourceFxBOObj.getFxrate()/60;
 					proAmounts.setQty(actualHours);
 					proAmounts.setEntry(resourceFxBOObj.getFxrate()*associateHours);
 					proAmounts.setUsd(resourceFxBOObj.getFxrate()/60);
 					
 					associateHours=associateDays*(resourceFxBOObj.getUof());
+					tmRecognised+=resourceFxBOObj.getFxrate()/60;					
 					accrAmounts.setQty(associateHours);
 					accrAmounts.setEntry(resourceFxBOObj.getFxrate()*associateHours);
 					accrAmounts.setUsd(resourceFxBOObj.getFxrate()/60);
 					
+					associateHours=associateDays*(resourceFxBOObj.getUof());
+					finalAmtEntry+=resourceFxBOObj.getFxrate()*associateHours;
+					finalAmtUSD+=resourceFxBOObj.getFxrate()/60;					
+					billAmounts.setQty(associateHours);
+					billAmounts.setEntry(resourceFxBOObj.getFxrate()*associateHours);
+					billAmounts.setUsd(resourceFxBOObj.getFxrate()/60);
+					
 					monthlyAmountsObj.setProjections(proAmounts);
 					monthlyAmountsObj.setAccruals(accrAmounts);
+					monthlyAmountsObj.setBilled(billAmounts);
 					monthlyAmountsObj.setRusGapDays(associateLeaves);
 					monthlyAmountsObj.setRusGapHours(associateLeaves*(resourceFxBOObj.getUof()));					
 					monthlyAmountsObj.setRemarks("No comment");
 					
+					rusGapDays+=associateLeaves;
+					rusGapHours+=associateLeaves*(resourceFxBOObj.getUof());
+					
 					monthlyAmountsList.add(monthlyAmountsObj);
-					projectDetailServiceImpl = new ProjectDetailServiceImpl();
-					finalResource=projectDetailServiceImpl.parseToFinalResource(resourceFxBOObj, monthlyAmountsList);
-					//resourceFxBOObj.setMonthlyDetails(monthlyAmountsList);
-					System.out.println("<br>final resourceFxBOObj=="+finalResource);
-					superResourceBOList.add(finalResource);
+					//projectDetailServiceImpl = new ProjectDetailServiceImpl();
+					//finalResource=projectDetailServiceImpl.parseToFinalResource(resourceFxBOObj, monthlyAmountsList);
+					resourceFxBOObj.setMonthlyDetails(monthlyAmountsList);
+					System.out.println("<br>final resourceFxBOObj=="+resourceFxBOObj);
+					superResourceBOList.add(resourceFxBOObj);
 					
 				}				
+				totalRecognisedAmt=tmRecognised-fpRecognised;
+				projectedAmt=projectedUSDAmt;
+				leftToInvoice=totalRecognisedAmt-finalAmtUSD;
+				GAP=totalRecognisedAmt-projectedAmt;
+				percentage=totalRecognisedAmt/projectedAmt;
 				
-				
+				projectedTotalsObj.setFactor(factor);
+				projectedTotalsObj.setFinalAmtEntry(finalAmtEntry);
+				projectedTotalsObj.setFinalAmtUSD(finalAmtUSD);
+				projectedTotalsObj.setFpRecognised(fpRecognised);
+				projectedTotalsObj.setGAP(GAP);
+				projectedTotalsObj.setLeftToInvoice(leftToInvoice);
+				projectedTotalsObj.setMonthlyBilled(monthlyBilled);
+				projectedTotalsObj.setMonthlyRecognised(monthlyRecognised);
+				projectedTotalsObj.setPercentage(percentage);
+				projectedTotalsObj.setProjectedAmt(projectedAmt);
+				projectedTotalsObj.setProjectedEntryAmt(projectedEntryAmt);
+				projectedTotalsObj.setProjectedTotalEfforts(projectedTotalEfforts);
+				projectedTotalsObj.setProjectedUSDAmt(projectedUSDAmt);
+				projectedTotalsObj.setRusGapDays(rusGapDays);
+				projectedTotalsObj.setRusGapHours(rusGapHours);
+				projectedTotalsObj.setTmRecognised(tmRecognised);
+				projectedTotalsObj.setTotalRecognisedAmt(totalRecognisedAmt);
+						
 				if(superResourceBOList.size()>0) {
 					//response.put("monthHolidays", monthHolidays);
-					//response.put("leaveHolidaysMap", leaveHolidaysMap);
+					//response.put("leaveHolidaysMap", leaveHolidaysMap);					
 					response.put("superResourceBOList", superResourceBOList);
+					response.put("projectedTotalsObj", projectedTotalsObj);
 					response.put("status", HttpStatus.OK.value());
 				}				
 				else {
