@@ -1,6 +1,5 @@
 package com.techm.po.service.impl;
 
-import java.sql.Date;
 import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -16,7 +15,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -70,22 +68,6 @@ public class ProjectDetailServiceImpl implements ProjectDetailService {
 				dto.setProjectStartDate(DateUtils.parseDate(projectBo.getProjectStartDate()));
 				dto.setProjectEndDate(DateUtils.parseDate(projectBo.getProjectEndDate()));
 				dto.setCreatedDate(LocalDateTime.now());
-
-				if (projectBo.getResources().size() > 0) {
-					for (ResourceMap r : projectBo.getResources()) {
-						ResourceMapDTO rdto;
-						rdto = rmapBoToDto(r);
-						resourceMapRepository.save(rdto);
-					}
-				}
-				if(projectBo.getContractToPid().size()>0) {
-					for (ResourceMap r : projectBo.getContractToPid()) {
-						ResourceMapDTO rdto;
-						rdto = rmapBoToDto(r);
-						resourcesRepository.updatecontractpid(rdto.getAssociateId(),rdto.getpId());
-					}
-				}
-
 				projectDetailRepository.save(dto);
 				response.put("message", "Project Details added successfully");
 				response.put("status", HttpStatus.CREATED.value());

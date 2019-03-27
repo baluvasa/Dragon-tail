@@ -10,6 +10,7 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +25,10 @@ import com.techm.po.service.AccessDetailsService;
 @Service
 public class AccessDetailsServiceImpl implements AccessDetailsService {
 
-	private final String password = "PO@123456";
+	//private final String password = "PO@123456";
+	
+	@Value("${po.default.password}")
+	private String password;
 	
 	@Autowired
 	private AccessDetailsRepository accessDetailsRepository;
@@ -48,7 +52,10 @@ public class AccessDetailsServiceImpl implements AccessDetailsService {
 				accessDetailsDTO.setGid(accessDetailsDTO.getGid().toUpperCase());
 				accessDetailsDTO.setAssociateName(accessDetailsDTO.getAssociateName().toUpperCase());
 				accessDetailsDTO.setStatus(DefaultEnums.ACTIVE.name());
+				accessDetailsDTO.setRole(accessDetailsDTO.getRole());
+				
 				accessDetailsDTO.setPassword(password);
+				accessDetailsDTO.setCreatedBy(accessDetailsDTO.getCreatedBy());
 				accessDetailsDTO.setCreatedDate(LocalDateTime.now());
 				accessDetailsRepository.save(accessDetailsDTO);
 				response.put("message", "Access details created successfully");
