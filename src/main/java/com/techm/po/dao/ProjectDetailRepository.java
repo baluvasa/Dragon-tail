@@ -24,14 +24,7 @@ public interface ProjectDetailRepository extends JpaRepository<ProjectDTO, Strin
 	@Query(value="UPDATE tbl_project SET status='INACTIVE' WHERE id=?1", nativeQuery=true)
 	void deleteProjectDetail(Integer id);
 
-	@Transactional
-	@Modifying
-	@Query(value="UPDATE tbl_project SET customer_spoc=?1, approval_method=?2, submission_mode=?3, project_type=?4, "
-			+ "billing_currency=?5, po_amount=?6, project_start_date=?7, project_end_date=?8, status=?9, "
-			+ "delivery_spoc=?10, effort_spoc=?11, modified_date=?12, modified_by=?14,WHERE pid=?13", nativeQuery=true)
-	void modifyProjectDetail(String customerSpoc, String approvalMethod, String submissionMode, String projectType,
-			String billingCurrency, String poAmount, LocalDate projectStartDate, LocalDate projectEndDate, String status,
-			String deliverySpoc, String effortSpoc, LocalDateTime modifiedDate, String pid, String modifiedBy);
+
 
 	@Query("select pDtl from ProjectDTO pDtl where lower(pDtl.accountCategory) like :accountCategory or "
             + "lower(pDtl.projectName) like :projectName or lower(pDtl.projectType) like :projectType or lower(pDtl.status) like :status")
@@ -49,4 +42,21 @@ public interface ProjectDetailRepository extends JpaRepository<ProjectDTO, Strin
 	
 	@Query("select pl from ProjectDTO pl where lower(pl.accountCategory)=:category and lower(pl.accountName)=:name")
 	List<ProjectDTO> fetchProjectDetailinfo(@Param("category") String accountcategory,@Param("name") String accountname);
-	}
+
+	@Transactional
+	@Modifying
+	@Query(value="UPDATE ProjectDTO SET customerSpoc=:customerSpoc, approvalMethod=:approvalMethod, "
+			+ " submissionMode=:submissionMode, projectType=:projectType, "
+			+ "billingCurrency=:billingCurrency, poAmount=:poAmount, projectStartDate=:projectStartDate,"
+			+ " projectEndDate=:projectEndDate, status=:status, "
+			+ "deliverySpoc=:deliverySpoc, effortSpoc=:effortSpoc, modifiedDate=:modifiedDate, modifiedBy=:modifiedBy "
+			+ "WHERE id=:id")
+	void modifyProjectDetail(@Param("customerSpoc") String customerSpoc,@Param("approvalMethod") String approvalMethod,
+			@Param("submissionMode") String submissionMode,@Param("projectType") String projectType,
+			@Param("billingCurrency") String billingCurrency,@Param("poAmount") String poAmount, 
+			@Param("projectStartDate") LocalDate projectStartDate,@Param("projectEndDate") LocalDate projectEndDate,
+			@Param("status") String status,@Param("deliverySpoc") String deliverySpoc, 
+			@Param("effortSpoc") String effortSpoc,
+			@Param("modifiedDate") LocalDateTime now, @Param("modifiedBy") String modifiedBy,@Param("id") int id);
+}
+

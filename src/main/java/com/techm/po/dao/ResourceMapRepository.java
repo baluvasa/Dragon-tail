@@ -4,7 +4,10 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -21,6 +24,11 @@ List<ResourceMapDTO> fetchResourcesDetail(String pId);
 
 @Query("SELECT rmd FROM ResourceMapDTO rmd where Lower(rmd.associateId)=:aid and Lower(rmd.contractId)=:cid")
 Optional<ResourceMapDTO> fetchResourceInfo(@Param("aid") String associateId,@Param("cid") String contractId);
+
+@Transactional
+@Modifying
+@Query("UPDATE ResourceMapDTO rmd SET rmd.linked='N' where rmd.resourceMapId=:id") 
+void inactiveassociate(@Param("id") Integer r);
 
 
 }

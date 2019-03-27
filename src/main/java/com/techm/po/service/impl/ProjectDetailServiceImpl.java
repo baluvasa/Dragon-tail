@@ -314,33 +314,11 @@ public class ProjectDetailServiceImpl implements ProjectDetailService {
 				projectDetailRepository.modifyProjectDetail(pDto.getCustomerSpoc(), pDto.getApprovalMethod(),
 						pDto.getSubmissionMode(), pDto.getProjectType(), pDto.getBillingCurrency(), pDto.getPoAmount(),
 						pDto.getProjectStartDate(), pDto.getProjectEndDate(), pDto.getStatus(), pDto.getDeliverySpoc(),
-						pDto.getEffortSpoc(), LocalDateTime.now(),
-						pDto.getPid(), pDto.getModifiedBy());
-				if(projectBo.getResources().size() > 0) {
-					for (ResourceMap r : projectBo.getResources()) {
-						Optional<ResourceMapDTO> rmapList;
-						if(r.getResourceMapId().equals(null)) {
-							rmapList=resourceMapRepository.findById(r.getResourceMapId());
-							if(rmapList.isPresent()) {							
-								resourceMapRepository.updateProjectinfo(r.getResourceMapId(),r.getLocation(),DateUtils.parseDate(r.getAssociateStartDate()),DateUtils.parseDate(r.getAssociateEndDate()),r.getLinked(),r.getpId(),r.getRatePerHour());	
-							}							
-						}
-						else
-						{
-							ResourceMapDTO rdto;
-							rdto = rmapBoToDto(r);
-							resourceMapRepository.save(rdto);
-						}
-						
-					}
-				}
-				
-				
-
+						pDto.getEffortSpoc(), LocalDateTime.now(), pDto.getModifiedBy(),pDto.getId());
 				response.put("message", "Project Details updated successfully");
 				response.put("status", HttpStatus.OK.value());
 			} catch (Exception e) {
-				throw new InvalidServiceException("Exception occured while updating Project details.");
+				throw new InvalidServiceException("Exception occured while updating Project details."+e.getMessage());
 			}
 		} else {
 			response.put("message", "No data found");

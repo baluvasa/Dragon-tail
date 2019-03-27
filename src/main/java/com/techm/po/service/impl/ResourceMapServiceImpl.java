@@ -61,6 +61,13 @@ public class ResourceMapServiceImpl implements ResourceMapService{
 					resourcesRepository.updatecontractpid(rdto_single_c.getAssociateId(),rdto_single_c.getpId());
 				}
 			}
+			if(resourceMapBo.getToContractPid().size()>0) {
+				
+				for(String r:resourceMapBo.getToContractPid()) {
+					System.out.println(r);
+					resourceMapRepository.inactiveassociate(Integer.parseInt(r));
+				}
+			}
 			response.put("message", "Resource Details added successfully");
 			response.put("status", HttpStatus.CREATED.value());
 			
