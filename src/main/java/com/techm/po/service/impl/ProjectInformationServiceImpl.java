@@ -2,6 +2,7 @@ package com.techm.po.service.impl;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -20,7 +21,9 @@ import org.springframework.stereotype.Service;
 import com.techm.po.dao.LeavesDetailsRepository;
 import com.techm.po.dao.ProjectInformationRepository;
 import com.techm.po.exception.InvalidServiceException;
+import com.techm.po.model.bo.Amounts;
 import com.techm.po.model.bo.LeavesBO;
+import com.techm.po.model.bo.MonthlyAmounts;
 import com.techm.po.model.bo.ProjectBO;
 import com.techm.po.model.bo.ProjectDetailsBO;
 import com.techm.po.model.bo.ResourceFxBO;
@@ -208,7 +211,10 @@ public class ProjectInformationServiceImpl implements ProjectInformationService{
 		LocalDate startdate1=null,enddate1=null; 
 		List<LeavesDTO> leavesBOList;
 		leavesBOList=new ArrayList<LeavesDTO>();
+		ResourceFxBO finalResource;
 		Map<String,Integer> leaveHolidaysMap=new HashMap<String,Integer>();
+		Map<String,HashMap<String,MonthlyAmounts>> associateMonthlyData=new HashMap<String,HashMap<String,MonthlyAmounts>>();
+		HashMap<String,MonthlyAmounts> monthlyDataMap=new HashMap<String,MonthlyAmounts>();
 		try {
 			Map<String,String> mmMap=new HashMap<String,String>();
 			mmMap.put("Jan", "january");	mmMap.put("Feb", "february");
@@ -217,13 +223,22 @@ public class ProjectInformationServiceImpl implements ProjectInformationService{
 			mmMap.put("Jul", "july");		mmMap.put("Aug", "august");
 			mmMap.put("Sep", "september");	mmMap.put("Oct", "october");
 			mmMap.put("Nov", "november");	mmMap.put("Dec", "december");
+			Map<String,Integer> mmNumberMap=new HashMap<String,Integer>();
+			mmNumberMap.put("Jan", 1);	mmNumberMap.put("Feb", 2);
+			mmNumberMap.put("Mar", 3);	mmNumberMap.put("Apr", 4);
+			mmNumberMap.put("May", 5);	mmNumberMap.put("Jun", 6);
+			mmNumberMap.put("Jul", 7);	mmNumberMap.put("Aug", 8);
+			mmNumberMap.put("Sep", 9);	mmNumberMap.put("Oct", 10);
+			mmNumberMap.put("Nov", 11);	mmNumberMap.put("Dec", 12);
 			String month=mmMap.get(yyyyMM.split("-")[1]);
 			String year=yyyyMM.split("-")[0];
 			startdate11="01-"+yyyyMM.split("-")[1]+"-"+yyyyMM.split("-")[0];
 			enddate11="31-"+yyyyMM.split("-")[1]+"-"+yyyyMM.split("-")[0];						
 			
-			  
-		  System.out.println("<br>startdate11=="+startdate11);
+			YearMonth yearMonthObject = YearMonth.of(Integer.parseInt(yyyyMM.split("-")[0]), mmNumberMap.get(yyyyMM.split("-")[1]));
+			int daysInMonth = yearMonthObject.lengthOfMonth();
+			System.out.println("<br>daysInMonth=="+daysInMonth);
+			System.out.println("<br>startdate11=="+startdate11);
 		  System.out.println("<br>enddate11=="+enddate11);
 		  
 		  startdate1=DateUtils.parseDate(startdate11);
@@ -283,16 +298,55 @@ public class ProjectInformationServiceImpl implements ProjectInformationService{
 				}*/
 				System.out.println("monthHolidays=="+monthHolidays);
 				System.out.println("totalLeaves=="+leaveHolidaysMap);
-				System.out.println("<br>results=="+results);
-				
+				//System.out.println("<br>results=="+results);
+				int workingDays=daysInMonth-monthHolidays;
+				int associateDays=0,associateHours=0,actualHours=0,associateLeaves=0;
+					
 				for(ResourceFxBO resourceFxBOObj:results) {
-					//ResourceFxBO 
-					//.resourceFxBOObj.set
-					superResourceBOList.add(resourceFxBOObj);
-				}
+					
+					List<MonthlyAmounts> monthlyAmountsList=new ArrayList<MonthlyAmounts>();
+					
+					MonthlyAmounts monthlyAmountsObj=new MonthlyAmounts();
+					Amounts proAmounts=new Amounts();
+					Amounts accrAmounts=new Amounts();
+					System.out.println("<br>resourceFxBOObj=="+resourceFxBOObj);
+					System.out.println("<br>resourceFxBOObj=="+resourceFxBOObj);
+					associateLeaves=leaveHolidaysMap.getOrDefault(resourceFxBOObj.getAssociateId(), 0);
+					//associateLeaves=leaveHolidaysMap.get(resourceFxBOObj.getAssociateId());
+					System.out.println("<br>associateLeaves=="+associateLeaves);
+					associateDays=workingDays-associateLeaves;
+					System.out.println("<br>associateDays"+associateDays);
+					
+					actualHours=workingDays*(resourceFxBOObj.getUof());
+					proAmounts.setQty(actualHours);
+					proAmounts.setEntry(resourceFxBOObj.getFxrate()*associateHours);
+					proAmounts.setUsd(resourceFxBOObj.getFxrate()/60);
+					
+					associateHours=associateDays*(resourceFxBOObj.getUof());
+					accrAmounts.setQty(associateHours);
+					accrAmounts.setEntry(resourceFxBOObj.getFxrate()*associateHours);
+					accrAmounts.setUsd(resourceFxBOObj.getFxrate()/60);
+					
+					monthlyAmountsObj.setProjections(proAmounts);
+					monthlyAmountsObj.setAccruals(accrAmounts);
+					monthlyAmountsObj.setRusGapDays(associateLeaves);
+					monthlyAmountsObj.setRusGapHours(associateLeaves*(resourceFxBOObj.getUof()));					
+					monthlyAmountsObj.setRemarks("No comment");
+					
+					monthlyAmountsList.add(monthlyAmountsObj);
+					projectDetailServiceImpl = new ProjectDetailServiceImpl();
+					finalResource=projectDetailServiceImpl.parseToFinalResource(resourceFxBOObj, monthlyAmountsList);
+					//resourceFxBOObj.setMonthlyDetails(monthlyAmountsList);
+					System.out.println("<br>final resourceFxBOObj=="+finalResource);
+					superResourceBOList.add(finalResource);
+					
+				}				
 				
-				if(results.size()>0) {
-					response.put("projectInfoList", results);
+				
+				if(superResourceBOList.size()>0) {
+					//response.put("monthHolidays", monthHolidays);
+					//response.put("leaveHolidaysMap", leaveHolidaysMap);
+					response.put("superResourceBOList", superResourceBOList);
 					response.put("status", HttpStatus.OK.value());
 				}				
 				else {
@@ -311,6 +365,7 @@ public class ProjectInformationServiceImpl implements ProjectInformationService{
 		
 		return response;
 	}
+	
 	
 //	@Override
 //	public Map<String, Object> addPoApprovalDetails(PoApprovalsDTO approvalsDto) {

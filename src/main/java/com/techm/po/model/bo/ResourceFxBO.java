@@ -106,11 +106,21 @@ public class ResourceFxBO {
 	public void setAssociateEndDate(LocalDate associateEndDate) {
 		this.associateEndDate = associateEndDate;
 	}
+	
+	public List<MonthlyAmounts> getMonthlyDetails() {
+		return monthlyDetails;
+	}
+
+	public void setMonthlyDetails(List<MonthlyAmounts> monthlyDetails) {
+		this.monthlyDetails = monthlyDetails;
+	}
+
 	@Override
 	public String toString() {
 		return "ResourceFxBO [rm=" + rm + ", associateId=" + associateId + ", associateName=" + associateName
 				+ ", associateStartDate=" + associateStartDate + ", associateEndDate=" + associateEndDate + ", band="
-				+ band + ", uof=" + uof + ", fxrate=" + fxrate + ", releasedate=" + releasedate + "]";
+				+ band + ", uof=" + uof + ", fxrate=" + fxrate + ", releasedate=" + releasedate + ", monthlyDetails="
+				+ monthlyDetails + "]";
 	}
-			
+	
 }

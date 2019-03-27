@@ -25,6 +25,7 @@ import com.techm.po.dao.ProjectDetailRepository;
 import com.techm.po.dao.ResourceMapRepository;
 import com.techm.po.dao.ResourceRepository;
 import com.techm.po.exception.InvalidServiceException;
+import com.techm.po.model.bo.MonthlyAmounts;
 import com.techm.po.model.bo.ProjectBO;
 import com.techm.po.model.bo.ProjectDetailsBO;
 import com.techm.po.model.bo.ResourceFxBO;
@@ -198,6 +199,26 @@ public class ProjectDetailServiceImpl implements ProjectDetailService {
 		}
 		return projectBoList;
 	}
+	
+	public ResourceFxBO parseToFinalResource(ResourceFxBO resourceFxBOObj,List<MonthlyAmounts> monthlyAmountsList) throws ParseException {
+			
+			ResourceFxBO resourceObj=new ResourceFxBO();
+			
+			resourceObj.setAssociateEndDate(resourceFxBOObj.getAssociateEndDate());
+			resourceObj.setAssociateId(resourceFxBOObj.getAssociateId());
+			resourceObj.setAssociateName(resourceFxBOObj.getAssociateName());
+			resourceObj.setAssociateStartDate(resourceFxBOObj.getAssociateStartDate());
+			resourceObj.setBand(resourceFxBOObj.getBand());
+			resourceObj.setFxrate(resourceFxBOObj.getFxrate());
+			resourceObj.setReleasedate(resourceFxBOObj.getReleasedate());
+			resourceObj.setRm(resourceFxBOObj.getRm());
+			resourceObj.setUof(resourceFxBOObj.getUof());
+			resourceObj.setMonthlyDetails(monthlyAmountsList);
+			
+			return resourceObj;
+			
+	}
+	
 
 	@Override
 	public Map<String, Object> fetchProjectDetail(String accountCategory, String projectName, String projectType,
@@ -564,6 +585,8 @@ public class ProjectDetailServiceImpl implements ProjectDetailService {
 		}
 		return response;
 	}
+	
+	
 	
 
 }
