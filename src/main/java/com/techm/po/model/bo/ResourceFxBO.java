@@ -12,6 +12,7 @@ public class ResourceFxBO {
 	private LocalDate associateEndDate;
 	private String band;
 	private int uof;
+	private String contractNumber;
 	private float fxrate;
 	private int releasedate;	
 	private List<MonthlyAmounts> monthlyDetails;
@@ -22,7 +23,7 @@ public class ResourceFxBO {
 	}
 	
 	public ResourceFxBO(String rm, String associateId, String associateName, LocalDate associateStartDate,
-			LocalDate associateEndDate, String band, int uof, float fxrate, int releasedate) {
+			LocalDate associateEndDate, String band, int uof, String contractNumber, float fxrate, int releasedate) {
 
 		this.rm = rm;
 		this.associateId = associateId;
@@ -31,13 +32,14 @@ public class ResourceFxBO {
 		this.associateEndDate = associateEndDate;
 		this.band = band;
 		this.uof = uof;
+		this.contractNumber=contractNumber;
 		this.fxrate = fxrate;
 		this.releasedate = releasedate;
 		
 	}
 	
 	public ResourceFxBO(String rm, String associateId, String associateName, LocalDate associateStartDate,
-			LocalDate associateEndDate, String band, int uof, float fxrate, int releasedate,
+			LocalDate associateEndDate, String band, int uof, String contractNumber, float fxrate, int releasedate,
 			List<MonthlyAmounts> monthlyDetails) {
 
 		this.rm = rm;
@@ -47,6 +49,7 @@ public class ResourceFxBO {
 		this.associateEndDate = associateEndDate;
 		this.band = band;
 		this.uof = uof;
+		this.contractNumber=contractNumber;
 		this.fxrate = fxrate;
 		this.releasedate = releasedate;
 		this.monthlyDetails = monthlyDetails;
@@ -88,6 +91,15 @@ public class ResourceFxBO {
 	public void setUof(int uof) {
 		this.uof = uof;
 	}	
+	
+	public String getContractNumber() {
+		return contractNumber;
+	}
+
+	public void setContractNumber(String contractNumber) {
+		this.contractNumber = contractNumber;
+	}
+
 	public float getFxrate() {
 		return fxrate;
 	}

@@ -256,22 +256,22 @@ public class ProjectInformationServiceImpl implements ProjectInformationService{
 				//resourceFxBO=projectInformationRepository.getPOSummaryDetails(accountCategory, accountName, projectName, yyyyMMM, customerName, projectStartDate, projectEndDate, currency, pId, startdate1, enddate1);
 				System.out.println("<br>results=="+startdate1+" "+enddate1+" "+quote+" "+contract+" "+pId+" "+month+" "+year);
 				String query="select NEW com.techm.po.model.bo.ResourceFxBO(rm.pId, r.associateId,r.associateName,"
-						+ "rm.associateStartDate,rm.associateEndDate ,r.band, pc.uom,"
+						+ "rm.associateStartDate,rm.associateEndDate ,r.band, pc.uom,pc.contractNumber,"
 						+ "rm.ratePerHour * cast((select fr.fxRate from FxRatesDTO fr where fr.fxDate = "
 						+ "(select fx.fxDate from FxRatesDTO fx where fx.fxDate "
 						+ "between :projectStart and :projectEnd and fx.status = 'ACTIVE') and fr.status='ACTIVE') as float), "
 						+ "EXTRACT(DAY FROM rm.associateEndDate-now()) as releasedate ) "
 						+ "from ResourceDTO r,ResourceMapDTO rm ,ProjectDTO p,ProjectContractDTO pc "
 						+ "where r.associateId=rm.associateId and rm.pId=p.pid and p.pid=pc.pid and "
-						+ "p.pid= :pId and pc.quote= :quote and pc.contractNumber= :contract";
+						+ "p.pid= :pId and rm.contractId=pc.contractNumber";
 				TypedQuery<ResourceFxBO> typedQuery = em.createQuery(query , ResourceFxBO.class);
 				typedQuery.setParameter("projectStart", startdate1);
 				typedQuery.setParameter("projectEnd", enddate1);
-				typedQuery.setParameter("quote", quote);
-				typedQuery.setParameter("contract", contract);
+				//typedQuery.setParameter("quote", quote);
+				//typedQuery.setParameter("contract", contract);
 				typedQuery.setParameter("pId", pId);				
 				List<ResourceFxBO> results = typedQuery.getResultList();
-				
+				//and pc.contractNumber= :contract and pc.quote= :quote
 				String q="select l.associateId as associateId,count(l),h."+month+" from LeavesDTO as l,HolidaysDTO h "
 						+ "where h.year= :year and l.leaveDate between :startdate1 and :enddate1 and l.status='ACTIVE' group by (l.associateId,h."+month+")";
 				TypedQuery<Object[]> typeQuery = em.createQuery(q,Object[].class);
@@ -315,21 +315,21 @@ public class ProjectInformationServiceImpl implements ProjectInformationService{
 					projectedEntryAmt+=resourceFxBOObj.getFxrate()*associateHours;
 					projectedUSDAmt+=resourceFxBOObj.getFxrate()/60;
 					proAmounts.setQty(actualHours);
-					proAmounts.setEntry(resourceFxBOObj.getFxrate()*associateHours);
-					proAmounts.setUsd(resourceFxBOObj.getFxrate()/60);
+					proAmounts.setEntry(resourceFxBOObj.getFxrate()*actualHours);
+					proAmounts.setUsd((resourceFxBOObj.getFxrate()*actualHours)/60);
 					
 					associateHours=associateDays*(resourceFxBOObj.getUof());
-					tmRecognised+=resourceFxBOObj.getFxrate()/60;					
+					tmRecognised+=((resourceFxBOObj.getFxrate()*associateHours))/60;					
 					accrAmounts.setQty(associateHours);
 					accrAmounts.setEntry(resourceFxBOObj.getFxrate()*associateHours);
-					accrAmounts.setUsd(resourceFxBOObj.getFxrate()/60);
+					accrAmounts.setUsd((resourceFxBOObj.getFxrate()*associateHours)/60);
 					
 					associateHours=associateDays*(resourceFxBOObj.getUof());
-					finalAmtEntry+=resourceFxBOObj.getFxrate()*associateHours;
-					finalAmtUSD+=resourceFxBOObj.getFxrate()/60;					
+					finalAmtEntry+=(resourceFxBOObj.getFxrate()*associateHours)*associateHours;
+					finalAmtUSD+=(resourceFxBOObj.getFxrate()*associateHours)/60;					
 					billAmounts.setQty(associateHours);
 					billAmounts.setEntry(resourceFxBOObj.getFxrate()*associateHours);
-					billAmounts.setUsd(resourceFxBOObj.getFxrate()/60);
+					billAmounts.setUsd((resourceFxBOObj.getFxrate()*associateHours)/60);
 					
 					monthlyAmountsObj.setProjections(proAmounts);
 					monthlyAmountsObj.setAccruals(accrAmounts);
