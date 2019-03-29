@@ -260,7 +260,7 @@ public class ProjectInformationServiceImpl implements ProjectInformationService{
 						+ "rm.ratePerHour * cast((select fr.fxRate from FxRatesDTO fr where fr.fxDate = "
 						+ "(select fx.fxDate from FxRatesDTO fx where fx.fxDate "
 						+ "between :projectStart and :projectEnd and fx.status = 'ACTIVE') and fr.status='ACTIVE') as float), "
-						+ "EXTRACT(DAY FROM rm.associateEndDate-now()) as releasedate ) "
+						+ "EXTRACT(DAY FROM rm.associateEndDate-now()) as releasedate ,rm.ratePerHour) "
 						+ "from ResourceDTO r,ResourceMapDTO rm ,ProjectDTO p,ProjectContractDTO pc "
 						+ "where r.associateId=rm.associateId and rm.pId=p.pid and p.pid=pc.pid and "
 						+ "p.pid= :pId and rm.contractId=pc.contractNumber";

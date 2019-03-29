@@ -12,6 +12,7 @@ public class ResourceFxBO {
 	private LocalDate associateEndDate;
 	private String band;
 	private int uof;
+	private int ratePerHour;
 	private String contractNumber;
 	private float fxrate;
 	private int releasedate;	
@@ -22,8 +23,16 @@ public class ResourceFxBO {
 		// TODO Auto-generated constructor stub
 	}
 	
+	public int getRatePerHour() {
+		return ratePerHour;
+	}
+
+	public void setRatePerHour(int ratePerHour) {
+		this.ratePerHour = ratePerHour;
+	}
+
 	public ResourceFxBO(String rm, String associateId, String associateName, LocalDate associateStartDate,
-			LocalDate associateEndDate, String band, int uof, String contractNumber, float fxrate, int releasedate) {
+			LocalDate associateEndDate, String band, int uof, String contractNumber, float fxrate, int releasedate,int ratePerHour) {
 
 		this.rm = rm;
 		this.associateId = associateId;
@@ -35,6 +44,7 @@ public class ResourceFxBO {
 		this.contractNumber=contractNumber;
 		this.fxrate = fxrate;
 		this.releasedate = releasedate;
+		this.ratePerHour=ratePerHour;
 		
 	}
 	
