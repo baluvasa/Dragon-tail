@@ -102,7 +102,7 @@ public class ProjectDetailServiceImpl implements ProjectDetailService {
 		pDto.setSubmissionMode(projectBo.getSubmissionMode());
 		pDto.setProjectType(projectBo.getProjectType());
 		pDto.setBillingCurrency(projectBo.getBillingCurrency());
-		pDto.setPoAmount(projectBo.getPoAmount());	
+//		pDto.setPoAmount(projectBo.getPoAmount());	
 		pDto.setProjectStartDate(DateUtils.parseDate(projectBo.getProjectStartDate()));
 		pDto.setProjectEndDate(DateUtils.parseDate(projectBo.getProjectEndDate()));
 		pDto.setStatus(projectBo.getStatus());
@@ -131,7 +131,7 @@ public class ProjectDetailServiceImpl implements ProjectDetailService {
 			projectBo.setSubmissionMode(dto.getSubmissionMode());
 			projectBo.setProjectType(dto.getProjectType());
 			projectBo.setBillingCurrency(dto.getBillingCurrency());
-			projectBo.setPoAmount(dto.getPoAmount());
+//			projectBo.setPoAmount(dto.getPoAmount());
 			projectBo.setProjectStartDate(DateUtils.reverseDateParsing(dto.getProjectStartDate().toString()));
 			projectBo.setProjectEndDate(DateUtils.reverseDateParsing(dto.getProjectEndDate().toString()));
 //			projectBo.setUnitOfMeasurement(dto.getUnitOfMeasurement());

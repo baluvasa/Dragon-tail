@@ -32,6 +32,7 @@ public class ResourceMapServiceImpl implements ResourceMapService{
 		rDto.setAssociateStartDate(DateUtils.parseDate(r.getAssociateStartDate()));
 		rDto.setAssociateEndDate(DateUtils.parseDate(r.getAssociateEndDate()));
 		rDto.setRatePerHour(r.getRatePerHour());
+		rDto.setRateMethod(r.getRateMethod());
 		rDto.setLinked(r.getLinked());
 		rDto.setpId(r.getpId());		
 		rDto.setContractId(r.getContractId());

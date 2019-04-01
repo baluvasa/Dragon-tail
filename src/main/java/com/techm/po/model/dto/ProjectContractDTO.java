@@ -17,6 +17,13 @@ public class ProjectContractDTO {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer contractId;
 	private String contractNumber;
+	private String contractAmount;
+	public String getContractAmount() {
+		return contractAmount;
+	}
+	public void setContractAmount(String contractAmount) {
+		this.contractAmount = contractAmount;
+	}
 	private String pid;
 	private String contractStartDate;
 	private String contractEndDate;
@@ -108,11 +115,13 @@ public class ProjectContractDTO {
 	}
 	@Override
 	public String toString() {
-		return "ProjectContractDTO [contractId=" + contractId + ", contractNumber=" + contractNumber + ", pid=" + pid
-				+ ", contractStartDate=" + contractStartDate + ", contractEndDate=" + contractEndDate + ", createdBy="
-				+ createdBy + ", createdDate=" + createdDate + ", modifiedBy=" + modifiedBy + ", modifiedDate="
-				+ modifiedDate + ", status=" + status + ", quote=" + quote + ", po=" + po + ", uom=" + uom + "]";
+		return "ProjectContractDTO [contractId=" + contractId + ", contractNumber=" + contractNumber
+				+ ", contractAmount=" + contractAmount + ", pid=" + pid + ", contractStartDate=" + contractStartDate
+				+ ", contractEndDate=" + contractEndDate + ", createdBy=" + createdBy + ", createdDate=" + createdDate
+				+ ", modifiedBy=" + modifiedBy + ", modifiedDate=" + modifiedDate + ", status=" + status + ", quote="
+				+ quote + ", po=" + po + ", uom=" + uom + "]";
 	}
+
 
 
 	

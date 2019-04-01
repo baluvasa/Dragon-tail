@@ -78,6 +78,7 @@ public class ProjectContractServiceImpl implements ProjectContractService {
 			projectContractDto.setContractNumber(projectContractDto.getContractNumber().toUpperCase());
 			projectContractDto.setContractEndDate(projectContractDto.getContractEndDate());
 			projectContractDto.setContractStartDate(projectContractDto.getContractStartDate());
+			projectContractDto.setContractAmount(projectContractDto.getContractAmount());
 			projectContractDto.setPid(projectContractDto.getPid());
 			projectContractDto.setQuote(projectContractDto.getQuote());
 			projectContractDto.setPo(projectContractDto.getPo());

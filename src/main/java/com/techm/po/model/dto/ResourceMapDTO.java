@@ -17,6 +17,7 @@ public class ResourceMapDTO {
 	private String associateId;
 	private String pId;
 	private String location;
+	private String rateMethod;
 	private int ratePerHour;
 	private String linked;
 	private String contractId;
@@ -24,6 +25,16 @@ public class ResourceMapDTO {
 
 	private LocalDate associateStartDate;
 	private LocalDate associateEndDate;
+	
+	
+	
+	
+	public String getRateMethod() {
+		return rateMethod;
+	}
+	public void setRateMethod(String rateMethod) {
+		this.rateMethod = rateMethod;
+	}
 	public Integer getResourceMapId() {
 		return resourceMapId;
 	}
@@ -81,10 +92,13 @@ public class ResourceMapDTO {
 	@Override
 	public String toString() {
 		return "ResourceMapDTO [resourceMapId=" + resourceMapId + ", associateId=" + associateId + ", pId=" + pId
-				+ ", location=" + location + ", ratePerHour=" + ratePerHour + ", linked=" + linked + ", contractId="
-				+ contractId + ", associateStartDate=" + associateStartDate + ", associateEndDate=" + associateEndDate
-				+ "]";
+				+ ", location=" + location + ", rateMethod=" + rateMethod + ", ratePerHour=" + ratePerHour + ", linked="
+				+ linked + ", contractId=" + contractId + ", associateStartDate=" + associateStartDate
+				+ ", associateEndDate=" + associateEndDate + "]";
 	}
+	
+	
+	
 	
 	
 }

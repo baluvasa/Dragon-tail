@@ -8,6 +8,13 @@ private String associateId;
 private String associateStartDate;
 private String associateEndDate;
 private String location;
+private String rateMethod;
+public String getRateMethod() {
+	return rateMethod;
+}
+public void setRateMethod(String rateMethod) {
+	this.rateMethod = rateMethod;
+}
 private int ratePerHour;
 private String linked;
 private String pId;
@@ -70,9 +77,11 @@ public void setAssociateStartDate(String associateStartDate) {
 @Override
 public String toString() {
 	return "ResourceMap [resourceMapId=" + resourceMapId + ", associateId=" + associateId + ", associateStartDate="
-			+ associateStartDate + ", associateEndDate=" + associateEndDate + ", location=" + location
-			+ ", ratePerHour=" + ratePerHour + ", linked=" + linked + ", pId=" + pId 
-			+ ", contractId=" + contractId + "]";
+			+ associateStartDate + ", associateEndDate=" + associateEndDate + ", location=" + location + ", rateMethod="
+			+ rateMethod + ", ratePerHour=" + ratePerHour + ", linked=" + linked + ", pId=" + pId + ", contractId="
+			+ contractId + "]";
 }
+
+
 
 }
