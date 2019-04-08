@@ -255,12 +255,19 @@ public class ProjectInformationServiceImpl implements ProjectInformationService{
 				float GAP=0,rusGapDays=0,rusGapHours=0,factor=0,monthlyRecognised=0,monthlyBilled=0;
 				//resourceFxBO=projectInformationRepository.getPOSummaryDetails(accountCategory, accountName, projectName, yyyyMMM, customerName, projectStartDate, projectEndDate, currency, pId, startdate1, enddate1);
 				System.out.println("<br>results=="+startdate1+" "+enddate1+" "+quote+" "+contract+" "+pId+" "+month+" "+year);
+				
+//				String q1="select FUNCTION('DATEDIFF', :hour ,GETDATE(), rm.associateEndDate) ";
+//				
+//				TypedQuery<Integer> type1 = (TypedQuery<Integer>) em.createQuery(q1);
+//				System.out.println("<br>====="+type1);
+				
 				String query="select NEW com.techm.po.model.bo.ResourceFxBO(rm.pId, r.associateId,r.associateName,"
 						+ "rm.associateStartDate,rm.associateEndDate ,r.band, pc.uom,pc.contractNumber,"
 						+ "rm.ratePerHour * cast((select fr.fxRate from FxRatesDTO fr where fr.fxDate = "
 						+ "(select fx.fxDate from FxRatesDTO fx where fx.fxDate "
 						+ "between :projectStart and :projectEnd and fx.status = 'ACTIVE') and fr.status='ACTIVE') as float), "
-						+ "EXTRACT(DAY FROM rm.associateEndDate-now()) as releasedate ,rm.ratePerHour) "
+//						+ "DATEDIFF(day, GETDATE(), rm.associateEndDate) as releasedate , "
+						+ "rm.ratePerHour) "
 						+ "from ResourceDTO r,ResourceMapDTO rm ,ProjectDTO p,ProjectContractDTO pc "
 						+ "where r.associateId=rm.associateId and rm.pId=p.pid and p.pid=pc.pid and "
 						+ "p.pid= :pId and rm.contractId=pc.contractNumber";
@@ -272,8 +279,8 @@ public class ProjectInformationServiceImpl implements ProjectInformationService{
 				typedQuery.setParameter("pId", pId);				
 				List<ResourceFxBO> results = typedQuery.getResultList();
 				//and pc.contractNumber= :contract and pc.quote= :quote
-				String q="select l.associateId as associateId,count(l),h."+month+" from LeavesDTO as l,HolidaysDTO h "
-						+ "where h.year= :year and l.leaveDate between :startdate1 and :enddate1 and l.status='ACTIVE' group by (l.associateId,h."+month+")";
+				String q="select l.associateId as associateId,count(l.leaveId),h."+month+" from LeavesDTO as l,HolidaysDTO h "
+						+ "where h.year= :year and l.leaveDate between :startdate1 and :enddate1 and l.status='ACTIVE' group by l.associateId,h."+month;
 				TypedQuery<Object[]> typeQuery = em.createQuery(q,Object[].class);
 				typeQuery.setParameter("startdate1", startdate1);
 				typeQuery.setParameter("enddate1", enddate1);

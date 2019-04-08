@@ -32,7 +32,7 @@ public class ResourceFxBO {
 	}
 
 	public ResourceFxBO(String rm, String associateId, String associateName, LocalDate associateStartDate,
-			LocalDate associateEndDate, String band, int uof, String contractNumber, float fxrate, int releasedate,int ratePerHour) {
+			LocalDate associateEndDate, String band, int uof, String contractNumber, float fxrate,int ratePerHour) {
 
 		this.rm = rm;
 		this.associateId = associateId;
@@ -43,13 +43,12 @@ public class ResourceFxBO {
 		this.uof = uof;
 		this.contractNumber=contractNumber;
 		this.fxrate = fxrate;
-		this.releasedate = releasedate;
 		this.ratePerHour=ratePerHour;
 		
 	}
 	
 	public ResourceFxBO(String rm, String associateId, String associateName, LocalDate associateStartDate,
-			LocalDate associateEndDate, String band, int uof, String contractNumber, float fxrate, int releasedate,
+			LocalDate associateEndDate, String band, int uof, String contractNumber, float fxrate, 
 			List<MonthlyAmounts> monthlyDetails) {
 
 		this.rm = rm;
@@ -61,7 +60,6 @@ public class ResourceFxBO {
 		this.uof = uof;
 		this.contractNumber=contractNumber;
 		this.fxrate = fxrate;
-		this.releasedate = releasedate;
 		this.monthlyDetails = monthlyDetails;
 	}
 
